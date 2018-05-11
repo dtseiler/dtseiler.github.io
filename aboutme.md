@@ -1,16 +1,16 @@
 ---
 layout: page
-title: About me
-subtitle: Why you'd want to go on a date with me
+title: About Me
+subtitle: The Deets
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+Hi. I'm Don. 
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+## Work
+I work mostly with databases, currently PostgreSQL, formerly Oracle. I do a fair amount of bash scripting to help with that, although I enjoy coding in python as well.
 
-What else do you need?
+## Play
+I devote a lot of my personal time to [youth hockey](http://www.manitowochockey.org). I also play more [Dota2](http://www.dota2.com) than a grown man should.
 
-### my history
-
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](http://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
+## Live
+I was born, raised and moved back to Manitowoc, Wisconsin, USA.
