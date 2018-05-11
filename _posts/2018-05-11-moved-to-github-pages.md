@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Moved to GitHub Pages"
 tags: blog
 date: 2018-05-11
