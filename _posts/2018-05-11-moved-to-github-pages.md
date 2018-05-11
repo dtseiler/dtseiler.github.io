@@ -2,7 +2,7 @@
 layout: post
 title: "Moved to GitHub Pages"
 tags: blog
-date: 2018-05-11
+date: '2018-05-11'
 image: img/avatar-icon.png
 ---
 
