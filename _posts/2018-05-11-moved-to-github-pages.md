@@ -1,9 +1,10 @@
 ---
 layout: post
 title: "Moved to GitHub Pages"
+subtitle: "Yet Another Beautiful Jekyll Site!"
 tags: blog
 date: '2018-05-11'
-image: img/avatar-icon.png
+image: /img/avatar-icon.png
 ---
 
 If you're reading this, then the migration has worked. My blog is now hosted via [GitHub Pages](https://pages.github.com/).
