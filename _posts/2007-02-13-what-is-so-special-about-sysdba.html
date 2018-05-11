@@ -1,0 +1,14 @@
+---
+layout: post
+title: What is so special about SYSDBA?
+date: '2007-02-13T10:19:00.000-06:00'
+author: Don Seiler
+tags:
+- sysdba
+- oracle
+modified_time: '2010-11-19T22:48:47.549-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-6153553232045793310
+blogger_orig_url: http://www.seiler.us/2007/02/what-is-so-special-about-sysdba.html
+---
+
+Last night in <a href="irc://chat.freenode.net/oracle">#oracle</a>, someone new to Oracle had some confusion with the SYSDBA privilege.  I proceeded to <a href="http://www.adp-gmbh.ch/ora/misc/sys_system_internal.html">drop</a> <a href="http://www.adp-gmbh.ch/ora/admin/connect_sysdba_sysoper.html">some</a> <a href="http://www.adp-gmbh.ch/ora/admin/sysdba.html">science</a> on him, but here's a basic primer:<br /><br /><ul><li>Only a user with the SYSDBA privilege can startup or shutdown an instance.</li><li>The oracle OS user can "connect / as sysdba" without providing any further authentication.  This is why you want to restrict access to that user as well.  In fact, that user (and probably anyone in the dba OS group) can "connect sys/not_a_real_password as sysdba" and it will always succeed.   Beware!</li><li>When you connect AS SYSDBA, you'll be logged in as SYS, regardless of what user you originally were connecting as.</li></ul>Thanks to <a href="http://www.adp-gmbh.ch/ora/">ADP</a> for the resources.  René has a nice resource site there and I reference it a lot, as well as his <a href="http://www.adp-gmbh.ch/">blog</a>.

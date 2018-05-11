@@ -1,0 +1,12 @@
+---
+layout: post
+title: DBWR and the Devil
+date: '2007-12-01T09:14:00.000-06:00'
+author: Don Seiler
+tags: 
+modified_time: '2010-11-20T12:21:37.028-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7740124883035456451
+blogger_orig_url: http://www.seiler.us/2007/12/dbwr-and-devil.html
+---
+
+I was recently re-reading parts <a href="http://kevinclosson.wordpress.com/2007/08/10/learn-how-to-obliterate-processor-caches-configure-lots-and-lots-of-dbwr-processes/">I</a>, <a href="http://kevinclosson.wordpress.com/2007/08/17/over-configuring-dbwr-processes-part-ii/">II</a>, <a href="http://kevinclosson.wordpress.com/2007/08/17/over-configuring-dbwr-processes-part-iii/">III</a> and <a href="http://kevinclosson.wordpress.com/2007/08/21/over-configuring-dbwr-processes-part-iv/">IV</a> of <a href="http://kevinclosson.wordpress.com/">Kevin Closson</a>'s series on the perils of overconfiguring your <a href="http://download.oracle.com/docs/cd/B19306_01/server.102/b14237/initparams057.htm#sthref236">db_writer_processes</a> (which I <a href="http://seilerwerks.wordpress.com/2007/08/17/dbwr-101/">mentioned earlier this year</a>).  My instance appeared to be a perfect candidate.  It was configured with db_writer_processes=4, using the one-DBWR-for-each-CPU approach that Kevin rails against for most configurations.<br /><br />After some other reading and investigation, I decided to make the change to only use one DBWR processes.  Changes to the db_writer_processes parameter require an instance bounce to take effect, and we had some downtime scheduled anyway.<br /><br />I'm happy to say that there are no ill effects.  I don't the see DBWn process anywhere on the top(1) radar.  I can't say I haven't seen any drastic performance improvements, but if I can do the same work at the same level with 1/4 of the resources, I'd call that a win.  It's probably a bigger win for our development/test server that had 3 production clones, each with 4 DBWR processes, for a total of 12 DBWRs.  This is now 1 each for 3 total, and (again) no reported performance hit.

@@ -1,0 +1,15 @@
+---
+layout: post
+title: Using NOT LNNVL() is NOT GOOD()
+date: '2007-04-04T15:43:00.000-05:00'
+author: Don Seiler
+tags:
+- bugs
+- oracle
+- lnnvl
+modified_time: '2010-11-19T22:48:46.968-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-2421607792078198530
+blogger_orig_url: http://www.seiler.us/2007/04/using-not-lnnvl-is-not-good.html
+---
+
+In re-working some old reports that I'm still maintaining, I decided to clean up instances of "WHERE foo > bar or foo is null" with some <a href="http://seilerwerks.blogspot.com/2007/02/lnnvl-ftw.html">LNNVL()</a> loving.  Given the nature of my query and of LNNVL(), I plugged in LNNVL(foo > bar) and prefaced it with a NOT, since LNNVL() will return false when I want thing to evaluate to true.  This was met with furious anger:<br /><pre><span style="color: rgb(0, 153, 0);">ORA-03113: end-of-file on communication channel</span></pre>It kills my database connection!  I headed over to <a href="http://metalink.oracle.com/">Metalink</a> and found Bug 4211527, reported over 2 years ago on 10gR1, with no workaround.  I confirmed the bug is still around in 10.2.0.3.  Back to the OR statement for me.

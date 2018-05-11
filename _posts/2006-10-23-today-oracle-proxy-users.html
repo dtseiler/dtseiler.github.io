@@ -1,0 +1,17 @@
+---
+layout: post
+title: 'Today''s Oracle <3:  Proxy Users'
+date: '2006-10-23T11:22:00.000-05:00'
+author: Don Seiler
+tags:
+- security
+- authentication
+- ldap
+- oracle
+- proxy users
+modified_time: '2010-11-19T22:48:48.421-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-8225008600333273510
+blogger_orig_url: http://www.seiler.us/2006/10/today-oracle-proxy-users.html
+---
+
+Got some IMs from one of my devs today including <a href="http://www.it-eye.nl/weblog/2005/09/09/oracle-proxy-users/">links</a> <a href="http://www.it-eye.nl/weblog/2005/09/12/oracle-proxy-users-by-example/">to</a> <a href="http://asktom.oracle.com/pls/ask/f?p=4950:8:::::F4950_P8_DISPLAYID:21575905259251">articles</a> about Oracle proxy users.  The IT-eye articles are very nice, and the asktom article just provides some tkyte flavor to it all.  The obvious and immediate benefit is for web applications that would normally log in as one application users, with many virtual users contained in some application-specific authentication and privilege system.  Proxy users gives you the privilege/role system of having real Oracle database users, and tightens up security by stripping all privileges away from the "application user" except for CREATE SESSION.<br /><br />It also gives you an outlet for authenticating your users.  In my case I could have my application do any type of authentication I would want, say to our MS Active Directory setup, and if that succeeds, make the call to proxy as that user in Oracle.  The important thing to note is that the actual user's password in Oracle is never used and never needs to be known.

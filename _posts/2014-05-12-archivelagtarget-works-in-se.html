@@ -1,0 +1,16 @@
+---
+layout: post
+title: archive_lag_target Works in SE
+date: '2014-05-12T15:34:00.000-05:00'
+author: Don Seiler
+tags:
+- 11gR2
+- data guard
+- oracle
+- standby
+modified_time: '2014-05-12T15:34:25.680-05:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-2448876944645338396
+blogger_orig_url: http://www.seiler.us/2014/05/archivelagtarget-works-in-se.html
+---
+
+<i>TL;DR: The archive_lag_target parameter will force log archiving in Standard Edition. </i><br /><br />Just a quick note here that I wanted to share since I didn't see anything directly confirming this when I was searching around. <br /><br />I have an Oracle 11gR2 Standard Edition (SE) database that I'm also maintaining a manual standby for, since Oracle Data Guard is not available in SE. I created a metric extension in EM12c to alert me if the standby is more than 1 hour behind the primary. However since this is a very low-activity database, archive logs were not switching even once an hour. Obviously, I could include a command to force a log switch/archive in the script that I use to push archivelogs to the standby. However we all know that with Data Guard on Enterprise Edition (EE), one would use the <a href="http://docs.oracle.com/cd/E11882_01/server.112/e40402/initparams009.htm#REFRN10003" target="_blank">archive_lag_target initialization parameter</a> to set the desired maximum standby lag. Oracle enforces this by performing a log switch at most every X seconds, where X is the number specified by the archive_lag_target value. By default this is set to 0, which disables the feature.<br /><br />I had assumed that archive_lag_target would only work in EE but decided to give it a try and was pleasantly surprised to see that it does work as intended in SE. So I can set archive_lag_target=900 to specify a 15 minute maximum log archiving (it would be more frequent if the database activity warranted an earlier switch).

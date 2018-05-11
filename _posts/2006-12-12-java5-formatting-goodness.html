@@ -1,0 +1,14 @@
+---
+layout: post
+title: Java5 Formatting Goodness
+date: '2006-12-12T14:46:00.000-06:00'
+author: Don Seiler
+tags:
+- sprintf
+- java
+modified_time: '2010-11-19T22:48:47.920-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-5397921980395712463
+blogger_orig_url: http://www.seiler.us/2006/12/java5-formatting-goodness.html
+---
+
+Back when I was researching how to format strings in java, I was dismayed that there wasn't built-in <a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?sprintf+3">sprintf()</a> functionality.  There was a non-standard class written by some folks at Sun called <a href="http://java.sun.com/developer/technicalArticles/Programming/sprintf/">PrintfFormat</a>.  Still, not the same.<br /><br />Yesterday I was reminded that such a thing was supposed to have been implemented in <a href="http://java.sun.com/j2se/1.5.0/docs/api/overview-summary.html">Java5</a>, and indeed it was.  The <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Formatter.html">Formatter</a> class provides just what I want, and it is all made even easier by just calling the static <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html#format%28java.lang.String,%20java.lang.Object...%29">String.format()</a> method.  Oh, RAPTURE!

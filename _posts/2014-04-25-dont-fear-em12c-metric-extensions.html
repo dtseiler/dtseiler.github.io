@@ -1,0 +1,15 @@
+---
+layout: post
+title: Don't Fear the EM12c Metric Extensions
+date: '2014-04-25T11:24:00.002-05:00'
+author: Don Seiler
+tags:
+- em12c
+- 11gR2
+- oracle
+modified_time: '2014-04-25T11:24:55.874-05:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-6703360846413189586
+blogger_orig_url: http://www.seiler.us/2014/04/dont-fear-em12c-metric-extensions.html
+---
+
+A few weeks ago, our customer support team asked us to automate part of their checklist that looks at the number of active sessions in our production database. In EM12c, this seemed like a no-brainer with the Average Active Sessions metric. So I added this to my production incident ruleset and went back to another project. Over the next few days we'd get pinged by EM12c but the support folks would say it shouldn't. After taking a look we realized that we should be looking at USER sessions, excluding the BACKGROUND sessions Oracle creates to run the instance (like DBWn and LGWR).<br /><br />The trouble was that I couldn't find a metric for just the user sessions. I had resolved myself to having a scheduler job or script run the SQL that I wanted and send an email if it was over my critical threshold. On a whim I put a message out to twitter, and thankfully <a class="vt-p" href="https://twitter.com/leight0nn/status/454286616375205888" target="_blank">my friend Leighton answered</a>. He suggested I look at adding a metric extension, something still foreign to me. I had seen the term in the EM12c interface but it sounded like some kind of plugin interface. Turns out it's simply another way of saying "user-defined metrics". Honestly, if they were labelled that way I would have started playing with them much sooner (subtle criticism).<br /><br />So a quick search turned up a <a class="vt-p" href="https://www.youtube.com/watch?v=_Sxg-m_jFyY" target="_blank">great video that showed just how simple it was to create a metric extension</a> based on a SQL query. In just a few minutes I had the metric extension created, tested and published. You can create many different types of metric extensions all target types, but in my case a simple SQL query for a database instance was all I needed:<br /><br /><span style="font-family: Courier New, Courier, monospace;">select count(*) from v$session</span><br /><span style="font-family: Courier New, Courier, monospace;">where type='USER' and status='ACTIVE';</span><br /><br />I then define the warning and critical thresholds for the count and it's done! I added it to my ruleset (removing the stock Average Active Sessions metric) and haven't looked back.<br /><br />Since then I've created a few other metric extensions, for example a standby lag check on a standard edition physical standby. My only regret is not taking the time to learn about these sooner. I suggest anyone using EM12c do so sooner rather than later.

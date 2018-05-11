@@ -1,0 +1,16 @@
+---
+layout: post
+title: ZFSSA EM12c Plugin Pro-Tip
+date: '2014-01-28T11:03:00.003-06:00'
+author: Don Seiler
+tags:
+- em12c
+- quickie
+- oracle
+- zfssa
+modified_time: '2014-01-28T11:12:14.662-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-3024258972192357764
+blogger_orig_url: http://www.seiler.us/2014/01/zfssa-em12c-plugin-pro-tip.html
+---
+
+When adding ZFSSA targets to <a class="vt-p" href="https://twitter.com/search?q=%23EM12c&amp;src=hash">#EM12c</a>, be sure to uncheck "kiosk user" for the oracle_agent user in ZFSSA. Doc ID 1609846.1<br /><br /><blockquote class="tr_bq">The versions 12.1.0.3.0 and 12.1.0.4.0 of the ZFS plugin require additional access to &nbsp;the ZFS appliance over that provided by the workflow used to configure the user.&nbsp;</blockquote><blockquote class="tr_bq">In addition to configuring Oracle ZFS Storage Appliance by running "Configure for Oracle Enterprise Manager Monitoring" workflow on the storage, the Oracle ZFS Storage Administrator must also perform the following additional steps:<br /><ol><li>Log in to the Sun ZFS Appliance as root.</li><li>Go to Configuration --&gt; User.</li><li>Select the oracle_agent user and click "Edit".</li><li>Uncheck the option "kiosk user".</li><li>Click "Apply".</li></ol><ol></ol><ol></ol><ol></ol><ol></ol>Once the oracle_agent has the kiosk limitation removed, monitoring can proceed normally.</blockquote><br /><a class="vt-p" href="https://twitter.com/dtseiler/status/428210917155692544">https://twitter.com/dtseiler/status/428210917155692544</a>

@@ -1,0 +1,14 @@
+---
+layout: post
+title: ASM, we hardly knew ye
+date: '2007-05-15T08:04:00.000-05:00'
+author: Don Seiler
+tags:
+- asm
+- oracle
+modified_time: '2010-11-19T22:48:46.506-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-2633640829684089518
+blogger_orig_url: http://www.seiler.us/2007/05/asm-we-hardly-knew-ye.html
+---
+
+Not only did I recently <a href="http://ora.seiler.us/2007/05/asmm-we-hardly-knew-ye.html">wave goodbye to ASMM</a>, I've also parted ways with ASM and have gone back to traditional filesystem-based storage.<br /><br />The reason is basically that it simply was not playing nice with our Hitachi disk.  The SA worked with Hitachi to try and get things working but in the end it was still causing ASM to lock up and crash the instances.  We've had such <a href="http://ora.seiler.us/2007/04/all-quiet-on-die-seilerwerks.html">problems from the beginning</a>.  So, needing to provide our developers with something stable to work against, the decision was made to go back to normal file storage.  ASM would have been a very nice leap for us, and I was really looking forward to seeing our production database running over it.<br /><br />So that makes ASM and ASMM down.  I think at this point <a href="http://ora.seiler.us/2007/02/assm-is-evil11.html">Howard Rogers would put a stake in ASSM's heart</a> as well!

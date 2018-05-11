@@ -1,0 +1,13 @@
+---
+layout: post
+title: 200 is such a hard number to work with, after all
+date: '2007-04-05T09:07:00.000-05:00'
+author: Don Seiler
+tags:
+- microsoft
+modified_time: '2010-11-19T22:48:46.955-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-5936156391081673115
+blogger_orig_url: http://www.seiler.us/2007/04/200-is-such-hard-number-to-work-with.html
+---
+
+<a href="http://lfod.us/">Will</a> in <a href="irc://chat.freenode.net/wilug">#</a><a href="http://www.wilug.org">wilug</a> shared <a href="http://support.microsoft.com/kb/330303/en-us">this fun Microsoft bug</a>.  From the report:<br /><blockquote>This problem occurs if the fully qualified domain name ( FQDN) of your computer is exactly 200 bytes long. During logon, one character more than the 200-byte allocation is written and heap corruption occurs.</blockquote>Of course, the suggested workaround is just as entertaining:<br /><blockquote>To work around this problem, rename the computer so that it is one character shorter. If you do so, the FQDN is less than 200 characters long and the heap corruption does not occur.</blockquote>Yes, this is old and was fixed in a service pack years ago.

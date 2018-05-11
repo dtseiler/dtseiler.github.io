@@ -1,0 +1,12 @@
+---
+layout: post
+title: Tuning Backup & Recovery
+date: '2007-11-13T16:52:00.000-06:00'
+author: Don Seiler
+tags: 
+modified_time: '2010-11-20T12:26:56.259-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-3888239266115657992
+blogger_orig_url: http://www.seiler.us/2007/11/tuning-backup-recovery.html
+---
+
+<div style="color: #222222; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; margin-bottom: 15px; margin-left: 0px; margin-right: 0px; margin-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px;">A level 0 database backup of my production instance takes over 8 hours, and duplication is just as long, if not longer. I’m going to do some&nbsp;<a href="http://download.oracle.com/docs/cd/B19306_01/backup.102/b14191/rcmtunin.htm#sthref1057" style="color: #004477; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px; text-decoration: underline;">reading</a>&nbsp;and see if we can shore things up. I’ll report back.&nbsp; The database is around 1.1 terabytes.&nbsp; Some have told me that their databases of similar size are backed up in only a couple of hours.</div><div style="color: #222222; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; margin-bottom: 15px; margin-left: 0px; margin-right: 0px; margin-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px;">My main concern is the duplication, or restore &amp; recovery.&nbsp; An 8 hour restore/recovery&nbsp; basically means the loss of a full business day (depending on when it is needed).</div>

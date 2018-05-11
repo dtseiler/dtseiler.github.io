@@ -1,0 +1,15 @@
+---
+layout: post
+title: Gathering stats for ONLY a partition
+date: '2007-07-11T22:14:00.000-05:00'
+author: Don Seiler
+tags:
+- partitions
+- statistics
+- oracle
+modified_time: '2010-11-19T22:48:46.283-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-8350137383350112507
+blogger_orig_url: http://www.seiler.us/2007/07/gathering-stats-for-only-partition.html
+---
+
+I'm sure you all know to use <a href="http://download.oracle.com/docs/cd/B19306_01/server.102/b14211/stats.htm#PFGRF30102">DBMS_STATS</a> to gather statistics for your tables and indexes.  The DBMS_STATS.GATHER_TABLE_STATS() method has as its first three parameters OWNNAME, TABNAME, and PARTNAME, specifying the schema owner name, table name, and table partition name, respectively.<br /><br />I had been assuming that specifying a partition name via the PARTNAME parameter would mean that I'd be gathering stats for just that partition.  Wrong!  You also need to specify GRANULARITY => PARTITION if that is your goal.  Otherwise the PARTNAME is simply ignored and global (table-wide) statistics will be gathered instead.<br /><br />Thanks to <a href="http://www.centrexcc.com/">Wolfgang Breitling</a> for the cluestick.

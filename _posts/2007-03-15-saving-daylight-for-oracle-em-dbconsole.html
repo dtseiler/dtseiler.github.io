@@ -1,0 +1,15 @@
+---
+layout: post
+title: Saving Daylight for Oracle EM dbconsole
+date: '2007-03-15T20:22:00.000-05:00'
+author: Don Seiler
+tags:
+- em dbconsole
+- dst
+- oracle
+modified_time: '2010-11-19T22:48:47.139-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7144935147986447323
+blogger_orig_url: http://www.seiler.us/2007/03/saving-daylight-for-oracle-em-dbconsole.html
+---
+
+The <a href="http://blogs.ittoolbox.com/database/technology/archives/changes-to-daylight-savings-time-in-2007-may-affect-your-databases-db2-oracle-and-others-13443">big DST scare</a> came and went and I thought I had gotten off scott-free.  I ran Oracle's utility to determine if I had any timezone-sensitive data, and it reported that other than the <a href="http://download-east.oracle.com/docs/cd/B19306_01/server.102/b14211/stats.htm#sthref1429">GATHER_STATS_JOB</a>, I don't.  I didn't mind letting the stats gathering shift for an hour until I could reschedule it, so I didn't apply Oracle's one-off DST patch or worry about upgrading to 10.2.0.3.<br /><br />Fast forward to today.  I decide to finally set up Oracle's EM dbconsole web UI for administration.  I had done this in the past on some other instances with absolutely no problems.  So imagine my surprise when it fails to start the dbconsole after installation.  When I tried to start it manually, I get this message:<tt><br /><span style="color: rgb(0, 153, 0);"><blockquote>The agentTZRegion value (US/Central) in /u00/app/oracle/product/10.2.0/db_1/foo.world_dev64/sysman/config/emd.properties does not match the current environment TZ setting(US/Central).</blockquote></span></tt>This error makes no sense at all.  US/Central doesn't match US/Central?  After some googling I found a note that this occurs when the Oracle software isn't patched, but the operating system is, which is the case here.  So Oracle was thinking US/Central (CST), but the operating system was saying US/Central (CDT).  CURSES!<br /><br />So I ended up downloading the latest Oracle one-off patch for 10.2.0.2 (with the version 4 timezone fixes, HI CANADA!) and, after a pretty painless patching process, all is well.  Of course I did ignore the "best practice" of having separate ORACLE_HOMEs for your ASM and RDBMS installations, so I did have to shutdown both, but since this RDBMS instance is the only one using this ASM instance, it really didn't matter.  It also helps that this is my test 64-bit migration server and no one was using it today but me.  :p<br /><br />I thought I could thumb my nose at Congress and their silly DST changes, but my love of the GUI brought me down.  ;_;

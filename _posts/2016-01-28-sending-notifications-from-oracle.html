@@ -1,0 +1,18 @@
+---
+layout: post
+title: Sending notifications from Oracle Enterprise Manager to VictorOps
+date: '2016-01-28T11:55:00.002-06:00'
+author: Don Seiler
+tags:
+- em
+- em12c
+- victorops
+- oem
+- monitoring
+- oracle
+modified_time: '2016-01-28T15:35:06.613-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-2229598644377669330
+blogger_orig_url: http://www.seiler.us/2016/01/sending-notifications-from-oracle.html
+---
+
+We use <a href="https://victorops.com/" target="_blank">VictorOps </a>for our paging/notification system, and we're pretty happy with it so far. On the DBA team, we've just been using a simple email gateway to send notifications from Oracle Enterprise Manager (EM) to VictorOps. Even then, we can only send the initial notification and not really send an automated recovery without more hacking than its worth. Not a big deal, but would be nice to have some more functionality.<br /><div><br /></div><div>So yesterday I decided I'd just sort it all out since <a href="http://victorops.force.com/knowledgebase/articles/Integration/Alert-Ingestion-API-Documentation/" target="_blank">VictorOps has a nice REST API</a> and Enterprise Manager has a nice <a href="http://docs.oracle.com/cd/E24628_01/doc.121/e24473/notification.htm#EMADM13040" target="_blank">OS script notification method framework</a>. The initial result can be found on my github: <a href="https://github.com/dtseiler/bin/blob/master/entmgr_to_victorops.sh" target="_blank">entmgr_to_victorops.sh</a>.</div><div><br /></div><div>It doesn't do anything fancy, but will handle the messages sent by your notification rules and pass them on to VictorOps. It keys on the incident ID to track which events it is sending follow-up (ie RECOVERY) messages for.</div><div><br /></div><div>Please do let me know if you have any bugs, requests, suggestions for it.</div><div><br /></div><div>Many thanks to Sentry Data Systems (my employer) for allowing me to share this code. It isn't mind-blowing stuff but should save you a few hours of banging your head against a wall.</div>

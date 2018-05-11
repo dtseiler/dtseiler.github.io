@@ -1,0 +1,12 @@
+---
+layout: post
+title: 'shutdown abort: Not always "fine"'
+date: '2013-12-04T13:57:00.002-06:00'
+author: Don Seiler
+tags: 
+modified_time: '2013-12-04T13:57:34.122-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7096898199199066866
+blogger_orig_url: http://www.seiler.us/2013/12/shutdown-abort-not-always-fine.html
+---
+
+When I started out as an Oracle DBA on Oracle 7.3, nearly everyone would tell you to avoid doing a "shutdown abort" if at all possible since it leaves the database open to possible corruptions. In the years and versions since, that thinking has softened greatly, to the point that now a lot of experienced DBAs will tell you that doing a shutdown abort is perfectly fine (unless you absolutely need a consistent shutdown, obviously). Oracle is definitely much more resilient and fault-tolerant now that it is not as palm-sweat-inducing as it once was.<br /><br />I still prefer to do a clean "shutdown immediate" when I can, but sometimes I'll have a standby database hang a little too long and I'll have to do an abort. Everything comes back fine except for one thing: block change tracking. When I restart the instance I'll see this in my alert log:<br /><br /><div><pre style="orphans: 2; text-align: -webkit-auto; widows: 2;"><code>CHANGE TRACKING file is not usable. The above change<br />stream(s) are open. Change tracking was not closed<br />cleanly the last time it was shutdown.<br />CHANGE TRACKING is reinitializing the change tracking file.<br /></code></pre><pre style="orphans: 2; text-align: -webkit-auto; widows: 2;"><code><br /></code></pre><span style="font-family: inherit;">As you can see, the change tracking file was unusable due to the shutdown abort and had to be re-initialized. This means that all the previous block change tracking data was lost, so the next level 1 incremental backup will be forced to read every block of every datafile instead of just the blocks that were changed. On my multi-terabyte standby database this meant a backup running time of over 14 hours versus a normal time of 2 hours.</span><br /><span style="font-family: inherit;"><br /></span><span style="font-family: inherit;">So just a friendly FYI if you're using block change tracking and in the habit of performing shutdowns.</span></div>

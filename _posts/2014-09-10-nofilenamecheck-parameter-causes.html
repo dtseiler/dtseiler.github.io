@@ -1,0 +1,15 @@
+---
+layout: post
+title: NOFILENAMECHECK Parameter Causes DUPLICATE DATABASE To Ignore DB_CREATE_FILE_DEST?
+date: '2014-09-10T23:06:00.001-05:00'
+author: Don Seiler
+tags:
+- 11gR2
+- rman
+- oracle
+modified_time: '2014-09-10T23:06:03.467-05:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-560045788276974961
+blogger_orig_url: http://www.seiler.us/2014/09/nofilenamecheck-parameter-causes.html
+---
+
+Last week I was creating a new testing database from a backup of our demo database, both under Oracle 11.2.0.3. I grabbed one of my old scripts to handle the duplicate function, which looked similar to this:<br /><br /><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">connect auxiliary /;<br />run {</span><br /><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; duplicate database to testdb<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; backup location '$BACKUPDIR'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nofilenamecheck;</span><br /><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">}</span><br /><br />One important difference between the demo database and this new test database is that the original demo database lives on a filesystem and the new database was to go onto ASM on a different host. I had copied the syntax from the old script and kicked it off. I made sure that the db_create_file_dest was set to the ASM diskgroup. However the restore would fail as RMAN tried to write to the filesystem path used by the original demo database, which didn't exist on this host, instead of the ASM diskgroup.<br /><br /><a name='more'></a><br /><br />Definitely puzzling to me. I double-checked <a href="http://docs.oracle.com/cd/B28359_01/backup.111/b28273/rcmsynta020.htm#CHDEHIGF" target="_blank">the documentation for NOFILENAMECHECK</a>, which only suggested that it did a check for matching filenames, but didn't state that it would cause the issue I was seeing. The summary saying that it would prevent RMAN from checking for a name collision, which it does to prevent from overwriting existing files on the same host.<br /><br />However what I found is that having NOFILENAMECHECK in my command resulted in RMAN restoring the files to the original path, ignoring my db_create_file_dest specifications. When I removed the NOFILENAMECHECK specification from the RMAN command, the files were restored to the ASM diskgroup as intended.<br /><br />MOS Support documents 1375864.1 and 874352.1 suggest using the DB_FILE_NAME_CONVERT parameter but I found this was not necessary when I set the DB_FILE_CREATE_DEST parameter, as long as I didn't use NOFILENAMECHECK. I couldn't find anything in MOS about NOFILENAMECHECK forcing the restore to use a certain location though. 

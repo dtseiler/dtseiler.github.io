@@ -1,0 +1,14 @@
+---
+layout: post
+title: Temporary Tables and REDO Logs
+date: '2007-01-09T21:02:00.000-06:00'
+author: Don Seiler
+tags:
+- global temporary tables
+- oracle
+modified_time: '2010-11-19T22:48:47.757-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-9087769733187429707
+blogger_orig_url: http://www.seiler.us/2007/01/temporary-tables-and-redo-logs.html
+---
+
+Today in <a href="http://education.oracle.com/pls/web_prod-plq-dad/show_desc.redirect?dc=D17090GC30&p_org_id=&amp;lang=&source_call=">DBA class</a>, the instructor matter-of-factly rattled off some characteristics on global temporary tables.  Among these I just barely noticed him state that they generate REDO logging.  I sat upright and asked him to confirm that I had heard him correctly, and indeed that is what he said.  He acknowledged that it runs contrary to what you'd think about an object that holds session-specific data that cannot be recovered anyway.<br /><br />Well I just did some googling and found out exactly what the case is, from <a href="http://download-east.oracle.com/docs/cd/B19306_01/server.102/b14220/schema.htm#i16096">Oracle 10gR2 Database Concepts</a>:<br /><br /><span style="font-style: italic;">"DML statements on temporary tables do not generate redo logs for the data changes. However, undo logs for the data and redo logs for the undo logs are generated."</span><br /><br />So it is sort of an indirect redo log generation.  Still, something to be aware of.  The instructor recalled how he once had a user filling up the archived log destination disk by running a lot of activity just on a global temporary table.

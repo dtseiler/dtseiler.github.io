@@ -1,0 +1,16 @@
+---
+layout: post
+title: The Story of RMAN Duplication and the Pre-Existing Tempfiles
+date: '2007-07-05T09:09:00.000-05:00'
+author: Don Seiler
+tags:
+- rman
+- oracle
+- duplication
+- metalink
+modified_time: '2010-11-19T22:48:46.319-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-5981062791266271690
+blogger_orig_url: http://www.seiler.us/2007/07/story-of-rman-duplication-and-pre.html
+---
+
+Just a brief note to share with you that if you are performing an RMAN duplication over an existing instance, you'll want to delete your temporary tablespace tempfiles first.  <a href="https://metalink.oracle.com/metalink/plsql/f?p=130:14:3517078840701032251::::p14_database_id,p14_docid,p14_show_header,p14_show_help,p14_black_frame,p14_font:NOT,374934.1,1,1,1,helvetica">Metalink Note 374934.1</a> can tell you the whys and wherefores.  The note also seems to suggest that the problem exists solely in Oracle 10.2.0.2.<br /><br />The note suggests getting the list of datafiles with "<span style="font-family: courier new;">select * from dba_temp_files;</span>", doing a "<span style="font-family: courier new;">startup force nomount</span>" and then deleting the files via OS commands, before finally kicking off the RMAN duplicate command.  I had been toying with a different method (creating a new temp2 tablespace and dropping the original with contents and datafiles), but this method seems to be cleaner.  Plus it is the WORD OF METALINK.

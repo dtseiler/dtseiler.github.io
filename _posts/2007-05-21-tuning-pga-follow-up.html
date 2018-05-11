@@ -1,0 +1,15 @@
+---
+layout: post
+title: 'Tuning the PGA: The Follow-Up'
+date: '2007-05-21T14:21:00.000-05:00'
+author: Don Seiler
+tags:
+- tuning
+- pga
+- oracle
+modified_time: '2010-11-19T22:48:46.491-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-6156375302240810567
+blogger_orig_url: http://www.seiler.us/2007/05/tuning-pga-follow-up.html
+---
+
+I know that all 3 of you have been shivering with anticiPATION at how <a href="http://ora.seiler.us/2007/04/pga-not-just-for-caddyshack-2-fans.html">my PGA tuning experiment</a> went.  Today is your lucky day.<br /><br />I did indeed raise the value of pga_aggregate_target to 512MB.  The cache hit ratio rose to near 80%, but the estimated over-allocations was quickly into the tens of thousands again.  Looking at V$PGA_TARGET_ADVICE, giving the PGA 1024MB (or 1GB) seemed the next logical choice.  That change was made last weekend, and after one week, I'm getting nothing but love:<br /><br /><pre><span style="color: rgb(0, 153, 0);">SQL> SELECT round(PGA_TARGET_FOR_ESTIMATE/1024/1024) target_mb,</span><br /><span style="color: rgb(0, 153, 0);">       ESTD_PGA_CACHE_HIT_PERCENTAGE cache_hit_perc,</span><br /><span style="color: rgb(0, 153, 0);">       ESTD_OVERALLOC_COUNT</span><br /><span style="color: rgb(0, 153, 0);">  FROM V$PGA_TARGET_ADVICE;</span><br /><br /><span style="color: rgb(0, 153, 0);"> TARGET_MB CACHE_HIT_PERC ESTD_OVERALLOC_COUNT</span><br /><span style="color: rgb(0, 153, 0);">---------- -------------- --------------------</span><br /><span style="color: rgb(0, 153, 0);">       128             60                13700</span><br /><span style="color: rgb(0, 153, 0);">       256             64                12475</span><br /><span style="color: rgb(0, 153, 0);">       512             82                 5614</span><br /><span style="color: rgb(0, 153, 0);">       768             91                  143</span><br /><span style="color: rgb(51, 51, 255);">      1024             95                    0</span><br /><span style="color: rgb(0, 153, 0);">      1229             96                    0</span><br /><span style="color: rgb(0, 153, 0);">      1434             96                    0</span><br /><span style="color: rgb(0, 153, 0);">      1638             96                    0</span><br /><span style="color: rgb(0, 153, 0);">      1843             96                    0</span><br /><span style="color: rgb(0, 153, 0);">      2048             96                    0</span><br /><span style="color: rgb(0, 153, 0);">      3072             96                    0</span><br /><span style="color: rgb(0, 153, 0);">      4096             96                    0</span><br /><span style="color: rgb(0, 153, 0);">      6144             96                    0</span><br /><span style="color: rgb(0, 153, 0);">      8192             96                    0</span><br /></pre>I've put my current level in blue above.  I'm satisfied with these numbers at 95% and 0.

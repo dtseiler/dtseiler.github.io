@@ -1,0 +1,15 @@
+---
+layout: post
+title: Upgrade to Oracle 12c, Get the Huge Trace Files for Free!
+date: '2015-07-21T12:12:00.002-05:00'
+author: Don Seiler
+tags:
+- features
+- 12c
+- oracle
+modified_time: '2015-07-21T12:12:46.172-05:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-8018021624247624249
+blogger_orig_url: http://www.seiler.us/2015/07/upgrade-to-oracle-12c-get-huge-trace.html
+---
+
+Last week we began testing a copy of our production database on Oracle 12c (12.1.0.2). This past weekend we were alerted that the disk holding our ADR diagnostic directory was near full. We noticed some pretty big (and recent) trace files there. Then it happened twice more. This last time filled the disk before we could get to it (thankfully only dev, and during the evening), meaning it filled up fast. The largest file was over 18GB and it only took 6 hours to get that big.<br /><br />I saved the three biggest trace files to a large NFS mount and did a trace file purge just to get our dev database back up. When I looked at those files, I saw they were all sqlplus sessions running the same DELETE statement after reports like this:<br /><br /><br /><span style="font-family: Courier New, Courier, monospace;">----- Cursor Obsoletion Dump sql_id=7q0kj0sp5k779 -----<br />Parent cursor obsoleted 1 time(s). maxchild=1024 basephd=0xae2a2ca308 phd=0xae2a2ca308<br />----- Dump Cursor sql_id=7q0kj0sp5k779 xsc=0x7ffbf191fd50 cur=0x7ffbf2702670 -----</span><br /><br />At first I thought it was a user session setting some oddball trace event. However our team found <b>DocID 1955319.1 (Huge Trace Files Created Containing "----- Cursor Obsoletion Dump sql_id=%s -----")</b><div><br /></div><div>Long story short, it's an unpublished bug introduced in 12.1.0.2 with the cursor obsoletion diagnostic dump "ehancement". I don't think they intended this though, even though they did say "Huge". The workaround is to disable it completely, via this hidden parameter:</div><div><br /></div><br /><span style="font-family: Courier New, Courier, monospace;">alter system set "_kks_obsolete_dump_threshold" = 0;</span><br /><div><br /></div><div><br /></div><div>There is this note at the end though:</div><blockquote class="tr_bq">Note: The underlying  cursor sharing problem should always be highlighted and investigated to ensure that the reason for the  non-sharing is known and fully understood.</blockquote>Which is definitely good advice.

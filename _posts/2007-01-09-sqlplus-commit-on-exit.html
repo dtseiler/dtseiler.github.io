@@ -1,0 +1,14 @@
+---
+layout: post
+title: sqlplus commit-on-exit?
+date: '2007-01-09T21:42:00.000-06:00'
+author: Don Seiler
+tags:
+- sqlplus
+- oracle
+modified_time: '2010-11-19T22:48:47.743-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-5820241179451906601
+blogger_orig_url: http://www.seiler.us/2007/01/sqlplus-commit-on-exit.html
+---
+
+ACHTUNG: Did you know that SQL*Plus issues a COMMIT when you exit?  This has nothing to do with the AUTOCOMMIT setting, which will automatically commit after every statement in sqlplus.<br /><br />If you issue a graceful exit (via the "exit" or "quit" command), sqlplus will always issue a commit.  However, if you were to be ungracefully disconnected, for example by closing your terminal window, then PMON will issue a rollback like it does with any other disconnected session.<br /><br />Here's a <a href="http://www.freelists.org/archives/oracle-l/08-2005/msg00841.html">small oracle-l thread</a> about it as well.  Google also turns up an <a href="http://awads.net/wp/2005/08/15/sql-plus-gotcha/">Eddie Awad post</a> on it.  Of course it turns out that this is a <a href="http://download-east.oracle.com/docs/cd/B19306_01/server.102/b14357/ch4.htm#sthref896">documented "feature"</a>:<br /><br /><span style="font-style: italic;">"Regardless of the AUTOCOMMIT setting, changes are committed when you exit SQL*Plus successfully."</span>

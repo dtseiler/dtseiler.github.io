@@ -1,0 +1,18 @@
+---
+layout: post
+title: Fixing a 32-to-64-bit Migration with utlirp.sql
+date: '2007-03-06T11:36:00.000-06:00'
+author: Don Seiler
+tags:
+- x86_64
+- utlirp
+- rman
+- utlrp
+- migration
+- oracle
+modified_time: '2010-11-19T22:48:47.315-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-8238852749922989693
+blogger_orig_url: http://www.seiler.us/2007/03/fixing-32-to-64-bit-migration-with.html
+---
+
+I plan to write up more about my big migration at work, but I wanted to drop one quick note.  I'm using RMAN to duplicate my 32-bit production server to a 64-bit development server (I'll do the same thing for production migration).  However, at the very end, RMAN puked this up:<br /><pre style="color: rgb(0, 153, 0);">RMAN-00571: ===========================================================<br />RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============<br />RMAN-00571: ===========================================================<br />RMAN-12005: error during channel cleanup<br />ORA-06544: PL/SQL: internal error, arguments: [56319], [], [], [], [], [], [], []<br />ORA-06553: PLS-801: internal error [56319]</pre>But otherwise RMAN said the duplication was finished and the database was opened.  I could log in locally as SYSDBA just fine, but logins through the listener gave me those two PL/SQL errors again, as did any attept to use PL/SQL.<br /><br />Thankfully, my blogging rival <a href="http://halisway.blogspot.com/">hali</a> in <a href="irc://chat.freenode.net/oracle">#oracle</a> suggested ultirp.sql, which is one of the many provided scripts in your $ORACLE_HOME/rdbms/admin/ directory, along with its brother, utlrp.sql.  From the comments of utlirp.sql:<br /><blockquote style="font-style: italic;">This script can be used to invalidate and all pl/sql modules (procedures, functions, packages, types, triggers, views) in a database.<br /><br />This script must be run when it is necessary to regenerate the compiled code because the PL/SQL code format is inconsistent with the Oracle executable (e.g., when migrating a 32 bit database to a 64 bit database or vice-versa).<br /><br />Please note that this script does not recompile invalid objects automatically. You must restart the database and explicitly invoke utlrp.sql to recompile invalid objects.</blockquote>That second paragraph described me to a tee.  So I kicked it off (have to start the instance in upgrade mode):<br /><pre style="color: rgb(0, 153, 0);">SQL> shutdown immediate;<br />SQL> startup upgrade;<br />SQL> @utlirp</pre>Once that finishes, it tells you to then restart in normal mode and run utlrp.sql to recompile the objects it just invalidated.<br /><pre style="color: rgb(0, 153, 0);">SQL> shutdown immediate;<br />SQL> startup;<br />SQL> @utlrp</pre>and VOILA!  Errors gone.  Of course, we still have to do the rest of the application testing!  Thanks to hali for the tip, and for agreeing to let me blog about it this time.

@@ -1,0 +1,15 @@
+---
+layout: post
+title: An end to my Oracle listener hanging
+date: '2007-05-21T22:55:00.000-05:00'
+author: Don Seiler
+tags:
+- listener
+- oracle
+- jealousy
+modified_time: '2010-11-19T22:48:46.472-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-8307653356546262975
+blogger_orig_url: http://www.seiler.us/2007/05/end-to-my-oracle-listener-hanging.html
+---
+
+Over the weekend I have become obsessed with two things: <a href="http://en.wikipedia.org/wiki/The_Allman_Brothers_Band">the Allman Brothers Band</a> and <a href="http://www.ardentperf.com/2007/04/05/crazy-networking-problem-on-linux/">Jeremy Schneider's diagnosis of the listener/ONS bug</a> found in Oracle 10.2.0.2.  The former due to "Jessica" being in the playlist for <a href="http://www.guitarherogame.com/gh2/">Guitar Hero II</a>, the latter because not only did it provide me a rhyme and reason (and workaround) for my Oracle listener hanging, but it is one of the most well-written and presented diagnoses that I've seen, even busting out tcpdump to sniff the wire.<br /><br />I somehow missed Jeremy's post when he originally wrote it a month ago, and <a href="http://oracledoug.com/serendipity/index.php?/archives/1271-10.2.0.2-Listener-bug,-new-child-listener-process-forked.html">stumbled across it today via Doug Burns</a>.  Doug mentions that he first noticed a problem when he saw multiple listener processes.  A-HEM:<br /><br /><pre><span style="color: rgb(0, 153, 0);">$ ps -aef | grep lsnr</span><br /><span style="color: rgb(0, 153, 0);">oracle   32573     1  0 May13 ?        00:16:15 /u00/app/oracle/product/10.2.0/db_1/bin/tnslsnr LISTENER -inherit</span><br /><span style="color: rgb(0, 153, 0);">oracle   32574 32573  0 May13 ?        00:00:16 /u00/app/oracle/product/10.2.0/db_1/bin/tnslsnr LISTENER -inherit</span><br /><span style="color: rgb(0, 153, 0);">oracle   32575 32574  0 May13 ?        00:00:10 /u00/app/oracle/product/10.2.0/db_1/bin/tnslsnr LISTENER -inherit</span><br /><span style="color: rgb(0, 153, 0);">oracle   32576 32574  0 May13 ?        00:00:00 /u00/app/oracle/product/10.2.0/db_1/bin/tnslsnr LISTENER -inherit</span></pre><br /><br />At the risk of gushing like a fanboi, I'll just direct you to Jeremy's post while I remain here and aspire to pull it together like he does when faced with such things.  Plus I can watch this:<br /><object height="350" width="425"><param name="movie" value="http://www.youtube.com/v/WfM6nRVBvGs"><param name="wmode" value="transparent"><embed src="http://www.youtube.com/v/WfM6nRVBvGs" type="application/x-shockwave-flash" wmode="transparent" height="350" width="425"></embed></object>

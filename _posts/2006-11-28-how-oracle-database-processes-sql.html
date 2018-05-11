@@ -1,0 +1,15 @@
+---
+layout: post
+title: How The Oracle Database Processes SQL Statements
+date: '2006-11-28T14:10:00.000-06:00'
+author: Don Seiler
+tags:
+- bind variables
+- oracle
+- sql
+modified_time: '2010-11-19T22:48:48.074-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7453692257019123249
+blogger_orig_url: http://www.seiler.us/2006/11/how-oracle-database-processes-sql.html
+---
+
+Eddie Awad posted (in June) a nice flowchart of <a href="http://awads.net/wp/2006/06/28/how-the-oracle-database-processes-sql-statements/">what Oracle does when it processes a SQL statement</a>.  Of particular import is the note in step 2 (parsing):<br /><br /><span style="font-style: italic;">"If a similar SQL statement exists in the shared pool, Oracle skips the parsing step. A SQL statement is parsed once no matter how many times the statement is run. As you can see, parsing does many things and consumes time and resources. You should always aim at minimizing parsing when writing SQL."<span style="font-style: italic;"><br /><br /></span></span>How do you minimize parsing?  <a href="http://seilerwerks.blogspot.com/2006/11/bind-your-variables-or-die.html">Bind variables</a>!  Now go re-write all of your applications to use them.

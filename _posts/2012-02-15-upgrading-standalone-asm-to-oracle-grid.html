@@ -1,0 +1,17 @@
+---
+layout: post
+title: Upgrading Standalone ASM to Oracle Grid Infrastructure 11.2.0.2? Beware Bug
+  10283819!
+date: '2012-02-15T14:53:00.000-06:00'
+author: Don Seiler
+tags:
+- bugs
+- grid
+- upgrade
+- oracle
+modified_time: '2012-02-15T14:53:22.380-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-6735260695911567653
+blogger_orig_url: http://www.seiler.us/2012/02/upgrading-standalone-asm-to-oracle-grid.html
+---
+
+No, this isn't a re-post of my <a href="http://www.pythian.com/news/18925/upgrading-standalone-asm-to-oracle-grid-infrastructure-11-2-0-2-beware-bug-1233183-1/">earlier blog about bug 1233183.1</a>. We've found a fun new bug that seems to be specific to our poor standalone ASM instances when upgrading from Oracle Grid Infrastructure 11.2.0.1 to 11.2.0.2.<br /><br />The bug was first brought to my attention about four days after completing the Grid Infrastructure upgrade. The client system administrator (SA) noticed that the disk holding the Oracle home directories was slowly filling, at the rate of about 1Gb per day. We identifed that core dump files being created under the new GRID_HOME/log/<hostname>diskmon/ directory, at the rate of about 1 every 10 minutes, each one about 8M in size. That adds up to 1152M (or just over 1Gb) per 24-hour day. Add that to the 8Gb that was being held in GRID_HOME/.patch_storage (we had to rollback the 11.2.0.1 April 2010 PSU and apply the 11.2.0.1 July 2010 PSU just to upgrade to 11.2.0.2), and that put a bit of a squeeze on the free disk.<br /><br />The good ol' OTN forums led me to bug 10283819. The original poster there shared also that removing the old (11.2.0.1) grid home directory and restarting diskmon services stopped the core dump creation. The poster then went to question a second issue with increased diskmon.log writing. After a solution was found for that, Oracle Support closed the bug for some reason, without ever addressing the core dump creation.<br /><br />I can verify that removing the old 11.2.0.1 grid home (I did a tar+bz2 first) and restarting the services did stop the core dump creation, and am pushing back to Oracle support to get the bug re-opened or a new bug filed to specifically address this. In the meantime, if you are unable or unsure about removing the old grid infrastructure home, it should be safe to have a regularly scheduled script remove the diskmon core dump directories and save you a full disk surprise late some night.</hostname>

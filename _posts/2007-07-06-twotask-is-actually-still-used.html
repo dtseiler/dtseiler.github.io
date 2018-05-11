@@ -1,0 +1,14 @@
+---
+layout: post
+title: TWO_TASK is actually still used.
+date: '2007-07-06T15:43:00.000-05:00'
+author: Don Seiler
+tags:
+- sqlplus
+- oracle
+modified_time: '2010-11-19T22:48:46.308-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-1430572158463236194
+blogger_orig_url: http://www.seiler.us/2007/07/twotask-is-actually-still-used.html
+---
+
+You'll have to forgive my obtuseness.  I only ever log into my Oracle servers as "oracle" and am able to login locally with<br /><br /><span style="color: rgb(0, 153, 0);font-family:courier new;" >$ sqlplus / as sysdba</span><br />or<br /><span style="color: rgb(0, 153, 0);font-family:courier new;" >$ sqlplus dts</span><br /><br />So today I was a little scared when I couldn't do this from an OS user other than oracle.  The $ORACLE_SID variable was indeed set correctly.  After quite a bit of hot Google action it turns out that <a href="http://download.oracle.com/docs/cd/B19306_01/server.102/b14357/qstart.htm#SQPUG004">sqlplus still uses the TWO_TASK environment variable</a>.  For some reason I had assumed it was deprecated and/or obsolete since I had never had to use it.<br /><br />Sometimes it helps to step down from the mountaintop for a clearer view.

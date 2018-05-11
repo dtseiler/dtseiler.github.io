@@ -1,0 +1,14 @@
+---
+layout: post
+title: Why Wait?
+date: '2007-03-26T21:02:00.000-05:00'
+author: Don Seiler
+tags:
+- wait
+- oracle
+modified_time: '2010-11-19T22:48:47.048-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-943444165869435625
+blogger_orig_url: http://www.seiler.us/2007/03/why-wait.html
+---
+
+Yes I spent 10 minutes trying to come up with a clever "wait"-based title and that's all I could come up with.  I even <a href="http://www.google.com/search?hl=en&safe=off&amp;client=firefox-a&rls=org.mozilla%3Aen-US%3Aofficial&amp;hs=18f&q=wait&amp;btnG=Search">Googled for "wait"</a> to find some inspiration.<br /><br />And now to tell you why "wait" ... the Oracle 10g wait interface!!!!!11  Feel my excitement.  I just recently read some articles by Robin Schumacher about the 10g wait interface to analyze possible reasons for why a query might take so long.  Is it waiting for disk I/O?  Is it waiting for CPU?  Well Oracle 10g provides some great views to see exactly what is waiting on what.  The Schumacher articles are "<a href="http://www.oracle.com/technology/pub/articles/schumacher_analysis.html">Response Time Analysis Made Easy in Oracle Database 10g</a>" and "<span class="topstoryhead"><a href="http://www.oracle.com/technology/pub/articles/schumacher_10gwait.html">Exploring the Oracle Database 10<i>g</i> Release 1 Wait Interface</a>".  The latter has the "only applies to Release 1" disclaimer, so caveat emptor.  The articles do overlap a bit, so perhaps the first article will suit you enough.<br /><br />I have to admit that a lot of it has left my brain already.  I'll have to take timeouts and do random checks.  I did run the query to get database wait time and CPU time ratios.  Let's just say that my production database was nowhere near the great ratios that Robin was seeing.  Hopefully some of the adjustments I plan to put in next month will bump things in my favor.<br /></span>

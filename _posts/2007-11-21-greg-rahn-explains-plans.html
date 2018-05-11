@@ -1,0 +1,12 @@
+---
+layout: post
+title: Greg Rahn Explains Plans
+date: '2007-11-21T17:01:00.000-06:00'
+author: Don Seiler
+tags: 
+modified_time: '2010-11-20T12:23:37.002-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-2238212726386983860
+blogger_orig_url: http://www.seiler.us/2007/11/greg-rahn-explains-plans.html
+---
+
+Greg over at <a href="http://structureddata.org/">Structured Data</a> has a <i>fantastic</i> piece titled "<a href="http://structureddata.org/2007/11/21/troubleshooting-bad-execution-plans/">Troubleshooting Bad Execution Plans</a>" which is a must-read for all.  Learning about the GATHER_PLAN_STATISTICS hint alone was worth the price of admission.<br /><br />Also time for me to re-evaluate the changes I made to <a href="http://download.oracle.com/docs/cd/B19306_01/server.102/b14237/initparams143.htm#sthref604">OPTIMIZER_INDEX_CACHING</a> and <a href="http://download.oracle.com/docs/cd/B19306_01/server.102/b14237/initparams144.htm#sthref609">OPTIMIZER_INDEX_COST_ADJ</a> a few versions back:<br /><br /><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;">SQL&gt; show parameters optimizer_index</span><br /><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><br /></span><br /><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;">NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; TYPE &nbsp; &nbsp; &nbsp; &nbsp;VALUE</span><br /><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;">------------------------------------ ----------- -----</span><br /><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;">optimizer_index_caching &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;integer &nbsp; &nbsp; 90</span><br /><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;">optimizer_index_cost_adj &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; integer &nbsp; &nbsp; 10</span>

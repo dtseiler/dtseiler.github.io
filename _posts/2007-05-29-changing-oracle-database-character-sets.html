@@ -1,0 +1,16 @@
+---
+layout: post
+title: Changing Oracle Database Character Sets
+date: '2007-05-29T13:54:00.000-05:00'
+author: Don Seiler
+tags:
+- csalter
+- oracle
+- csscan
+- nls
+modified_time: '2010-11-19T22:48:46.448-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-865350284498748354
+blogger_orig_url: http://www.seiler.us/2007/05/changing-oracle-database-character-sets.html
+---
+
+Our big application database has a character set of USASCII7, something left over from before my time here (approaching 6 years now).  We've recently seen "errors" in some of the applications caused by characters being loaded into the database that are outside of the USASCII7 domain, namely "ú" and "ñ".  A second database used for ETL uses WE8ISO8859P1 for its character set, and that's when we see the errors.<br /><br />I've begun researching the process of migrating our main application database to WE8ISO8859P1 as well, which seems to be the Oracle default now as well for new database created with DBCA.  I've run <a href="http://download-east.oracle.com/docs/cd/B19306_01/server.102/b14225/ch12scanner.htm#i1005939">csscan</a> to give me an idea of how smoothly that conversion would go.  I didn't expect any errors, since USASCII7 is a complete subset of the Western European sets, however csscan did report errors for all of the non-USASCII7 characters, which <a href="http://www.freelists.org/archives/oracle-l/05-2007/msg00347.html">I asked about on the oracle-l list</a>.<br /><br />Unfortunately no one has answered <a href="http://www.freelists.org/archives/oracle-l/05-2007/msg00763.html">my last question</a> as to what would happen if I went ahead with <a href="http://download-east.oracle.com/docs/cd/B19306_01/server.102/b14225/ch11charsetmig.htm#CEGHDCJF">CSALTER</a>, and what, exactly, does csscan mean by "lossy conversion".  Guess I'll have to try-it-and-see.  I'll follow up with my results and parameters.

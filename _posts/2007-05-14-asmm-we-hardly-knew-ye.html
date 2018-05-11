@@ -1,0 +1,15 @@
+---
+layout: post
+title: ASMM, we hardly knew ye.
+date: '2007-05-14T11:50:00.000-05:00'
+author: Don Seiler
+tags:
+- memory
+- oracle
+- asmm
+modified_time: '2010-11-19T22:48:46.518-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-330721516698214056
+blogger_orig_url: http://www.seiler.us/2007/05/asmm-we-hardly-knew-ye.html
+---
+
+Yesterday I finally busted a cap in ASMM's proverbial ass, setting sga_target back to 0 and manually configuring the various SGA member pool sizes.  After <a href="http://www.freelists.org/archives/oracle-l/04-2007/msg00351.html">my first problems with ASMM</a>, I began <a href="http://ora.seiler.us/2007/04/asmm-pitfalls.html">reading more and more</a> about "immaturities" with ASMM which I hadn't come across before, particularly with rapid-fire SGA fluctuations thrashing the hell out of things.  Perhaps that's what I get when I only read Oracle-published white papers on new and OMGAWESOME Oracle technologies.<br /><br />So, not wanting a replay of the 2:30 AM ORA-00600 page, I decided to just go back to good old static SGA allocation.<br /><br />I also doubled my pga_aggregate_target to 1G, based on the advisor table advice.  Hopefully overallocations will be a thing of the past!  After a whopping 4 hours of normal usage, my cache hit percentage is up from 85% to 97%.  Dare to dream!

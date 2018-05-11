@@ -1,0 +1,19 @@
+---
+layout: post
+title: ASM Startup Fails With ORA-04031 After Adding CPUs
+date: '2014-07-13T15:11:00.000-05:00'
+author: Don Seiler
+tags:
+- 11gR2
+- cpu
+- memory
+- 12c
+- asm
+- oracle
+- asmm
+modified_time: '2014-07-13T15:11:31.901-05:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-608929420226608026
+blogger_orig_url: http://www.seiler.us/2014/07/asm-startup-fails-with-ora-04031-after.html
+---
+
+A few weeks ago we upgraded one of our production server, adding another CPU tray. This brought the number of CPU cores from 80 to 160, and took us from 2Tb of RAM to 4Tb (just in time for Oracle to announce the in-memory database in 12.1.0.2!).<br /><br />However when I went to start things up, ASM wasn't starting up, giving me these errors:<br /><br /><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">ORA-04031: unable to allocate 32 bytes of shared memory ("shared pool","unknown object","KKSSP^550","kglseshtSegs")</span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br />ORA-04031: unable to allocate 392 bytes of shared memory ("shared pool","unknown object","sga heap(1,1)","kdlwss")</span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br />ORA-04031: unable to allocate 560 bytes of shared memory ("shared pool","unknown object","sga heap(1,1)","KKSSP")<br />RBAL (ospid: 59427): terminating the instance due to error 4031</span><br /><br /><br /><a name='more'></a><br />A quick search of MOS turned up this gem: <br /><br />Unable To Start ASM (ORA-00838 ORA-04031) On 11.2.0.3/11.2.0.4 If OS CPUs # &gt; 64. (Doc ID 1416083.1), with this cause:<br /><blockquote class="tr_bq">In 11.2.0.3/11.2.0.4, the "PROCESSES" parameter will be default to "available CPU cores * 80 + 40" (in the ASM spfile).  As the default value for "MEMORY_TARGET" is based on "PROCESSES", it can be insufficient if there is a large number of CPU cores or large number of diskgroups which could cause issues (i.e. Grid Infrastructure stack fails to stop with ORA-04031 etc) per <a href="https://support.oracle.com/epmos/faces/BugDisplay?id=13605735">Bug:13605735</a> &amp; <a href="https://support.oracle.com/epmos/faces/BugDisplay?id=12885278">Bug:12885278</a>, it is recommended to increase the value of MEMORY_MAX_TARGET &amp; MEMORY_TARGET before upgrading/installing to 11.2.0.3/11.2.0.4 (does not apply to 10g ASM). </blockquote><br />We followed the workaround of increasing the ASM memory_target (and memory_max_size) to 4Gb (from 500Mb) and things started up just fine.<br /><br />We've since actually increased the memory even more in ASM to see even better performance but I haven't taken the time yet to precisely understand where that is coming from. I'll be sure to write another post to detail that.<br /><br />For now we're definitely enjoying the bigger shared pool and buffer caches in 11.2. We're definitely excited to dig into the in-memory options in the upcoming 12.1.0.2.

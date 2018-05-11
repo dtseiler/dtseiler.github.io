@@ -1,0 +1,16 @@
+---
+layout: post
+title: Bind Your Variables or Die
+date: '2006-11-28T10:14:00.000-06:00'
+author: Don Seiler
+tags:
+- bind variables
+- tuning
+- sql injection
+- oracle
+modified_time: '2010-11-19T22:48:48.089-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-689254724294352482
+blogger_orig_url: http://www.seiler.us/2006/11/bind-your-variables-or-die.html
+---
+
+<span style="font-style: italic;font-size:85%;" >NOTE: I'm re-pasting this from an internal wiki page I wrote up for our new developers who may not be aware of such a thing as bind variables and how they can greatly improve performance and scalability.</span><br /><br />Most know that using bind variables help greatly with performance when dealing with an often-used query, such as a customer lookup. Read <a href="http://www.rittman.net/2004/03/24/bind-variables-explained/" class="external text" title="http://www.rittman.net/2004/03/24/bind-variables-explained/" rel="nofollow">Mark Rittman's article</a>, which does a great job of explaining all there is to be explained in that regard. <p>A quick summary that Oracle has to re-parse literal queries everytime, generating new query plans every time and storing that processed query in memory. With bind variables, only one such process, parse and memory storage takes place and that information gets re-used when that bind query is called again with different bound values. This saves on the CPU having to re-parse and re-plan the query, and saves on memory by not having to store yet another query plan. </p><p>To get an idea of how important DBAs consider the use of bind variables, read <a href="http://asktom.oracle.com/pls/ask/f?p=4950:8:4961008651001301816::NO::F4950_P8_DISPLAYID,F4950_P8_CRITERIA:528893984337" class="external text" title="http://asktom.oracle.com/pls/ask/f?p=4950:8:4961008651001301816::NO::F4950_P8_DISPLAYID,F4950_P8_CRITERIA:528893984337" rel="nofollow">Tom Kyte's thrashing</a> of a user who was unlucky enough to incur his wrath.<br /></p><p>Read about <a href="http://download-east.oracle.com/docs/cd/B19306_01/appdev.102/b14251/adfns_dynamic_sql.htm#sthref1135" class="external text" title="http://download-east.oracle.com/docs/cd/B19306_01/appdev.102/b14251/adfns_dynamic_sql.htm#sthref1135" rel="nofollow">Using Bind Variables to Guard against SQL injection</a>. <a href="http://www.unixwiz.net/techtips/sql-injection.html">SQL injection exploits</a> are one of the most common attacks on database-driven websites, as attackers would exploit the fact that a SQL query such as user validation is built with literals, and they could turn this query: </p> <pre>SELECT * FROM users<br />WHERE username='dts'<br />and password='foo'<br /></pre> <p>into </p> <pre>SELECT * FROM users<br />WHERE username='dts'<br />and password='foo' or 1=1<br /></pre> <p>Using bind variables prevents such exploits from happening due to how the values are substituted.</p>

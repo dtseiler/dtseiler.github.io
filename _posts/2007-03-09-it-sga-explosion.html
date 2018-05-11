@@ -1,0 +1,18 @@
+---
+layout: post
+title: It's an SGA Explosion!
+date: '2007-03-09T21:03:00.000-06:00'
+author: Don Seiler
+tags:
+- x86_64
+- puschitz
+- pythian
+- linux
+- sga
+- oracle
+modified_time: '2010-11-19T22:48:47.222-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-4911135509620859120
+blogger_orig_url: http://www.seiler.us/2007/03/it-sga-explosion.html
+---
+
+So now that I have an instance riding on some 64-bit hardware, I decided that it's time to raise the<a href="http://download-east.oracle.com/docs/cd/B19306_01/server.102/b14196/instance001.htm#sthref225"> SGA</a>.  On our current 32-bit production and development machines, we have it set to roughly 1.5 GB, and the maximum SGA for 32-bit is roughly 1.75 GB.  However with 64-bit addressing, the max is now ... I don't even know what it is.  As <a href="http://users.livejournal.com/kim_jong_il__/">Kim Jong-Il</a> said in <a href="http://www.teamamerica.com/">Team America</a>: "NO ONE DOES."  Basically it's up there where astronauts and angels dream.<br /><br />So I went about setting sga_target and sga_max_size to 8 GB (8192M) and restarted the instance ... or attempted to.  The instance refused to start again, giving me this:<br /><pre><br /><span style="color: rgb(0, 153, 0);">SQL> startup</span><br /><span style="color: rgb(0, 153, 0);">ORA-27102: out of memory</span><br /><span style="color: rgb(0, 153, 0);">Linux-x86_64 Error: 28: No space left on device</span><br /></pre><br />Some searching around led me to <a href="http://www.pythian.com/blogs/245/the-mysterious-world-of-shmmax-and-shmall">this post</a> from <a href="http://www.pythian.com/blogs/author/paulm/">Paul Moen</a> over at <a href="http://www.pythian.com/">Pythian</a> (friends of this blog ... more on that later).  It seems we had undervalued our shmall as do a lot of people.  As Paul wrote:<br /><blockquote> The real godfather, the wizard behind the curtain is shmall. Its value determines the maximum amount of memory that ALL shared memory can take.<br />Just to make it fun, the actual setting is derived…<br />the <strong>maximum amount of memory = shmall * pagesize</strong><br />where pagesize = <em>getconf PAGE_SIZE</em> and shmall = <em>cat /proc/sys/kernel/shmall</em> <p>Making shmall larger than free RAM is a recipe for paging hell and much gnashing of teeth. Oracle recommends half the RAM, we pushed the envelope and chose 75% as 8 gigabytes of free for OS and cache is just wasteful.<br />Especially given Oracle is already caching hot blocks in its memory.</p></blockquote><p></p>Another review of <a href="http://www.puschitz.com/TuningLinuxForOracle.shtml#SettingSHMALLParameter">puschitz</a> (puschitz real good) confirmed things.  After some tinkering by my SA, we now have an 8 GB SGA.  I did originally set it to 16 GB, which might be a goal in production, but probably best to start modest with 8 GB for a multi-instance development box.

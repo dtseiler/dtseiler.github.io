@@ -1,0 +1,16 @@
+---
+layout: post
+title: Compound Primary Keys Must Die
+date: '2006-11-10T13:27:00.000-06:00'
+author: Don Seiler
+tags:
+- tuning
+- indexes
+- oracle
+- keys
+modified_time: '2010-11-19T22:48:48.271-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-4479755783830069078
+blogger_orig_url: http://www.seiler.us/2006/11/compound-primary-keys-must-die.html
+---
+
+It turns out that a lot of the headaches of the past few weeks at work are all due to an incredibly shitty primary key on a large warehouse table.  Before I get into specifics there, I'd like to formally proclaim my allegiance to the use of <a href="http://en.wikipedia.org/wiki/Surrogate_key">surrogate keys</a> and my hatred for compound keys.  Many of the Oracle "gurus" (including <a href="http://tkyte.blogspot.com/">Tom Kyte</a>) agree as well.  You can use <a href="http://www.google.com/search?q=surrogate+key+vs+compound+key&ie=utf-8&amp;oe=utf-8&rls=org.mozilla:en-US:official&amp;client=firefox-a">the Google</a> to find reasons to use them.  I'll list smaller indexes on both the table in question AND tables with foreign keys as a big reason off the top.<br /><br />Now, on this table at work, which I'll call FOO, there is currently a <span style="font-weight: bold;">10-field compound primary key</span>.  Yeah, that's right.  I take some shame in having this in my database, although the design was inherited, and I'm just now feeling comfortable and confident enough to start suggesting radical changes to our developers.  So this primary key begins with columns LOC, CUST_NO, YEAR, and MONTH.  Then it includes 5 fields that are rarely, if ever queried (I turned on <a href="http://www.oracle.com/technology/oramag/webcolumns/2003/techarticles/nanda_fga.html">FGA</a> on this table and verified that).  Then the last field is the relatively new FOO_SEQ_NO, which is unique for a LOC, CUST_NO, YEAR and MONTH.  Virtually every query against this table uses LOC, CUST_NO, YEAR and MONTH.  FYI, this table is also range partitioned on YEAR and MONTH.<br /><br />The problem is that after we load a new large batch of records from a previously unloaded market into the current partition, the optimizer no longer uses the big PK index, instead choosing to use a second index which doesn't even use CUST_NO.  This causes a LOT of I/O and painfully slow query times, until we are able to gather_table_stats() on it, which can take up to 2 hours.<br /><br />What became painfully obvious after I turned on fine-grained auditing, is that 95% of the queries only use LOC, CUST_NO, YEAR and MONTH, so the massively compound primary key index is almost 50% useless.  On a development instance, I dropped the PK constraint and index and built a new non-unique index on just LOC, CUST_NO, YEAR and MONTH.  I do plan to add a unique constraint on the former PK fields just to keep things sane in case some part of the application relied on that.  The sample query ran fine before and after the dataload, using the new index right away without having to gather stats.<br /><br />Now, the case of the FOO table was an EXTREME of an ugly compound key/index, and the problem wasn't so much the compoundedness of it as much as the index not being reflective of what user queries needed.  But I still loathe compound keys.

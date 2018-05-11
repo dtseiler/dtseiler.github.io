@@ -1,0 +1,14 @@
+---
+layout: post
+title: selecting count(1) vs count(*)
+date: '2007-01-05T14:13:00.000-06:00'
+author: Don Seiler
+tags:
+- tuning
+- oracle
+modified_time: '2010-11-19T22:48:47.806-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-1147341267682180223
+blogger_orig_url: http://www.seiler.us/2007/01/selecting-count1-vs-count.html
+---
+
+Count me among the many who naively assumed that using count(1) instead of count(*) was somehow faster or less resource-intensive when counting the number records in a select query.  Herod over at Yet Another Oracle DBA <a href="http://yaodba.blogspot.com/2007/01/old-questions-refreshed-again.html">provides some more evidence</a> on top of <a href="http://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:1156151916789">Tom Kyte's previous smackdown</a>.

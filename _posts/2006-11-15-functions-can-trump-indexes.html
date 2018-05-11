@@ -1,0 +1,15 @@
+---
+layout: post
+title: Functions Can Trump Indexes
+date: '2006-11-15T22:35:00.000-06:00'
+author: Don Seiler
+tags:
+- indexes
+- oracle
+- cbo
+modified_time: '2010-11-19T22:48:48.180-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7714657889210810381
+blogger_orig_url: http://www.seiler.us/2006/11/functions-can-trump-indexes.html
+---
+
+<div xmlns="http://www.w3.org/1999/xhtml">It seems that I'm dense enough to simply read over the first sentence of <a href="http://oramossoracle.blogspot.com/2006/09/help-cost-based-optimizer-add.html">this post</a> (which <a href="http://seilerwerks.blogspot.com/2006/11/constraints-and-cbo.html">I linked to</a> earlier) and not bother to think what it means. Last night I read about it in the 10g DBA Handbook and it stuck, probably because they focused on it with some examples.<br /><br />Using a function on a B*Tree (normal) indexed column in your WHERE clause means that Oracle won't use that index. For example:<br /><pre><br />select * from emp<br />where UPPER(lastname) = 'JONES';<br /></pre><br />will most likely result in a full table scan, despite an index on lastname. However, you could create a function-based index on UPPER(lastname), like this:<br /><pre><br />create index emp_upper_lastname on<br />emp(upper(lastname));<br /></pre><br />Of course, the whole point of <a href="http://oramossoracle.blogspot.com/2006/09/help-cost-based-optimizer-add.html">Jeff's post</a> was to describe an alternative to using a function-based index by using UPPER() check constraints that the CBO can utilize.<br /><br />The world becomes clearer every day.</div>

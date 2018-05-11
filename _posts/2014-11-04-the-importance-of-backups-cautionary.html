@@ -1,0 +1,17 @@
+---
+layout: post
+title: The Importance of Backups (A Cautionary Block Recovery Tale)
+date: '2014-11-04T22:28:00.001-06:00'
+author: Don Seiler
+tags:
+- corruption
+- recovery
+- rman
+- oracle
+- restore
+modified_time: '2014-11-04T22:28:19.371-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7093567814428582851
+blogger_orig_url: http://www.seiler.us/2014/11/the-importance-of-backups-cautionary.html
+---
+
+Just wanted to share a quick story with everyone. As I was in the airport waiting to fly to Oracle OpenWorld this year, I noticed a flurry of emails indicating that part of our storage infrastructure for our standby production database had failed. Long story short, my co-workers did a brilliant job of stabilizing things and keeping recovery working. However, we ended up with more than a few block corruptions.<br /><br />Using the RMAN command "validate database", we could then see the list of corrupt blocks in the v$database_block_corruption view. All that was needed was to run "recover corruption list" in RMAN, which will dig into datafile copies and backups to do what it can to repair or replace the corrupt blocks and then recover the datafiles. Of course, nothing is ever that easy for us!<br /><br />The storage we were writing our weekly backups to had been having problems and the latest weekly had failed. We ended up having to back 2 weeks into backups to get the datafile blocks and archivelogs to eventually complete the corruption recovery. I also immediately moved our backups to more reliable storage as well so that we're never in the situation of wondering whether or not we have the backups we need.<br /><br />So, triple-check your backup plan, validate your backups and TEST RECOVERY SCENARIOS! You can't say your backups are valid until you use them to perform a restore/recovery, and you don't want to find out the hard way that you forgot something.

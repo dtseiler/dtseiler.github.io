@@ -1,0 +1,13 @@
+---
+layout: post
+title: Following Up re HALP
+date: '2007-10-09T16:13:00.000-05:00'
+author: Don Seiler
+tags:
+- oracle
+modified_time: '2010-11-19T22:48:46.067-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-6560910137128773187
+blogger_orig_url: http://www.seiler.us/2007/10/following-up-re-halp.html
+---
+
+Just a follow-up to <a href="http://ora.seiler.us/2007/09/halp.html">this post</a>.  Turns out that the problem was caused by an aborted online relayout on some disk that housed our archive log destination.  Rather than actually aborting, the relayout process was left in a "paused" state.  After the sys admin cleared this state, performance went back to normal, and we were bulk loading anything and everything we could throw at it with no problem.<br /><br /><a href="http://confio.com/">Confio</a> <a href="http://confio.com/English/Products/Ignite_for_Oracle.php">Ignite</a> was actually pretty helpful in showing me the events that were going down and when.  Mark, Dean and Jan were great in getting my head around some of what I was seeing as well (more helpful than Oracle support seemed).

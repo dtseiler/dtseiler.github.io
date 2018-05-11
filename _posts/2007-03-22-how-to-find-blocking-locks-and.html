@@ -1,0 +1,14 @@
+---
+layout: post
+title: How to Find Blocking Locks and Influence People
+date: '2007-03-22T09:50:00.002-05:00'
+author: Don Seiler
+tags:
+- locks
+- oracle
+modified_time: '2011-02-08T08:46:55.357-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-1321605180167532300
+blogger_orig_url: http://www.seiler.us/2007/03/how-to-find-blocking-locks-and.html
+---
+
+An oft-asked question of any DBA is "wtf is my query doing?"  To translate this into a more civil tongue: "My DML statement seems to be taking extraordinarily long.  Might you be a gentleman and obtain the reasons why?"<br /><br />More often than not it will be because one or more of the objects they are trying to access has a blocking lock on it from another user session.  This is usually the result of an uncommitted transaction, which <span style="font-style: italic;">can be</span> a sign of poor application design.  Transactions should be committed or rolled back when they are done.  Sometimes this is not done, as when an error occurs in one of the statements in the transaction.  In those cases, the individual statement will roll back, but the transaction will remain uncommitted.  Applications need to catch this and (probably) roll back the transaction as well.<br /><br />But back to the original task of detecting a blocking lock!  There is a <a class="vt-p" href="http://orafaq.com/node/854">great OraFAQ article</a> on the subject.  I encourage you to read that, and I'll just cheat and post the meaty query they use to get the goods:<br /><pre class="bb-code-block"><pre><span class="Apple-style-span" style="color: blue; font-family: 'Courier New', Courier, monospace; font-size: x-small;">SQL&gt; select s1.username || '@' || s1.machine<br />  2  || ' ( SID=' || s1.sid || ' )  is blocking '<br />  3  || s2.username || '@' || s2.machine || ' ( SID=' || s2.sid || ' ) ' AS blocking_status<br />  4  from v$lock l1, v$session s1, v$lock l2, v$session s2<br />  5  where s1.sid=l1.sid and s2.sid=l2.sid<br />  6  and l1.BLOCK=1 and l2.request &gt; 0<br />  7  and l1.id1 = l2.id1<br />  8  and l1.id2 = l2.id2 ;<br /><br /><br />BLOCKING_STATUS<br />----------------------------------------------------------------------------<br />BULKLOAD@yttrium ( SID=422 )  is blocking BULKLOAD@yttrium ( SID=479 )<br /><br />1 row selected.</span></pre></pre>As you can see, this will tell you the user/host of all blocking locks, and the user/host of who they are blocking.  Now you can venture forth to see what the blocking session is doing and begin the process of fixing some bad transactional application code.  Or you can just kill it.

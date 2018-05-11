@@ -1,0 +1,19 @@
+---
+layout: post
+title: The Leap Second is No Laughing Matter (if you have java on an older Linux kernel)
+date: '2015-07-21T16:50:00.000-05:00'
+author: Don Seiler
+tags:
+- time
+- date
+- linux
+- oracle
+- rhel
+- java
+- leap second
+modified_time: '2015-08-09T21:27:39.772-05:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-4117651983302053523
+blogger_orig_url: http://www.seiler.us/2015/07/the-leap-second-is-no-laughing-matter.html
+---
+
+Earlier this month we began getting frequent email warnings from our EM12c server that some agents were experiencing read time outs. Then we saw that the emagent java process was using A LOT of CPU, regularly around 500% but sometimes as high as 800% as seen from "top". Restarting the agent did nothing.<br /><div><br /></div><div>I opened an SR with Oracle Support, where I was first instructed to apply a JDBC patch and then a PSU agent patch. No change in behavior.</div><div><br /></div><div><a href="http://courtneyllamas.com/" target="_blank">Courtney Llamas</a> from the Oracle EM team reached out and suggested it might be due to the leap second, directing me to these MOS docs:</div><div><br /><ul><li>Enterprise Manager Management Agent or OMS CPU Use Is Excessive near Leap Second Additions on Linux (Doc ID 1472651.1)</li><li>Leap Second Hang - CPU Can Be Seen at 100% (Doc ID 1472421.1)</li></ul><div>The workaround is to restart ntpd (or reboot the server):</div><br /><span style="font-family: Courier New, Courier, monospace;"># /etc/init.d/ntpd stop<br />#  date -s "`date`"    (reset the system clock)<br /># /etc/init.d/ntpd start</span><br /><span style="font-family: Courier New, Courier, monospace;"><br /></span><span style="font-family: inherit;">I monitored top while my system admin restarted ntpd and reset the clock. As soon as he did, java CPU usage dropped like a rock.</span><br /><span style="font-family: inherit;"><br /></span><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://reactiongifs.me/wp-content/uploads/2013/08/shia-labeouf-magic-gif.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://reactiongifs.me/wp-content/uploads/2013/08/shia-labeouf-magic-gif.gif" height="179" width="320" /></a></div><span style="font-family: inherit;"><br /></span><span style="font-family: inherit;">While I'm incredibly grateful that Courtney provided the solution in basically 5 minutes, I'm even more upset that Oracle Support had me doing everything but for the 20 days that my original SR has been open.</span><br /><span style="font-family: inherit;"><br /></span><span style="font-family: inherit;">Of course the real joke is on me, since I first reported the error on July 1 and we all joked on twitter how it was probably due the leap second. The fault also lies with me since I failed to notice that our kernel version (2.6.32-220) was still vulnerable to this (fixed in 2.6.32-279). See <a href="http://www.pythian.com/blog/handling-the-leap-second-linux/" target="_blank">Maris Elsins' great write-up</a>&nbsp;(which I apparently skimmed too lightly).</span></div>

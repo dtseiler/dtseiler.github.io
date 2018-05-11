@@ -1,0 +1,14 @@
+---
+layout: post
+title: What Is NULL?
+date: '2007-06-06T23:23:00.000-05:00'
+author: Don Seiler
+tags:
+- 'null'
+- oracle
+modified_time: '2010-11-19T22:48:46.363-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-3370286363421062570
+blogger_orig_url: http://www.seiler.us/2007/06/what-is-null.html
+---
+
+Today in <a href="irc://chat.freenode.net/oracle">#oracle</a>, Burk0 asked:<br /><br /><span style="color: rgb(0, 153, 0);font-family:courier new;" >&lt;Burk0> mmm... got another problem... I'm using a "insert or update" trigger for my previous task. When I'm inserting a new row, I'd like the varchar field "oldvalue" to report "NA". I put an IF inside the trigger, checking if :old.id=null but that doesn't seem to work..any hint?</span><br /><br />A fortuitous situation to be sure, for I had just minutes before finished reading <a href="http://thinkoracle.blogspot.com/2005/05/null-vs-nothing.html">this 2005 blog post from Robert Vollman</a>.  Although this situation was easily answered by informing the reader that comparisons to NULL require the use of "IS" and "IS NOT", as opposed to the equals operator "=", I went a step further and explained that <span style="font-style: italic;">nothing</span> is equal to NULL, not even NULL itself.<br /><br />The <a href="http://thinkoracle.blogspot.com/2005/05/null-vs-nothing.html#111644994577311481">comment by HJR</a> is particularly helpful:<br /><blockquote>When you insert a row that explicitly includes a NULL, you are explicitly stating you don't know what value should be included for that column. That is again very different from just missing it out. The one is a deliberate action and acknowledgement of the limits to knowledge. The other could be just a mere oversight.<br /><br />...<br /><br />Incidentally, because NULL means 'I don't know', you can never equate anything to NULL... even itself. Two unknowns are two unknowns, not two bits of the same unknown... for to be able to say that would require knowing something about them!<br /></blockquote>Music.  Sweet music

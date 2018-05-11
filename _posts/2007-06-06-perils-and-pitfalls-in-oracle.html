@@ -1,0 +1,15 @@
+---
+layout: post
+title: 'Perils and Pitfalls in Oracle Partitioning: Bind Variables?'
+date: '2007-06-06T22:01:00.000-05:00'
+author: Don Seiler
+tags:
+- bind variables
+- partitions
+- oracle
+modified_time: '2010-11-19T22:48:46.389-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7674356981455201477
+blogger_orig_url: http://www.seiler.us/2007/06/perils-and-pitfalls-in-oracle.html
+---
+
+Recently one of my developers found some articles by Arup Nanda while researching a query performance problem.  The articles were title "Perils and Pitfalls in Partitioning," parts <a href="http://www.dbazine.com/oracle/or-articles/nanda4">1</a> and <a href="http://www.dbazine.com/oracle/or-articles/nanda5">2</a>.<br /><br />In particular he was curious about this statement in part 2:<br /><blockquote><p><b>While using partitioning, should you use bind variables?</b></p> <p>This is an interesting question. As we all know, use of bind variables eliminates the need to parse the cursors and makes it easier to reuse the cursors.</p> <p>In case of partitions, however, using bind variables poses a problematic situation. Partition elimination and joins can occur only if the optimizer knows the filtering predicate in advance. The value of bind variables are not known until it's time to execute, making the process of partition elimination or joins impossible. Therefore, to take advantage of these options, you should not use bind variables.</p> <p>In Oracle 9i, the first parse of the statement, called hard parse, peeks into the value of the bind variable, and can effect these optimization options. But this occurs only with the hard parse; subsequent parses still go around the bind variable values.</p></blockquote>I had come across this explanation before, about how Oracle will peek at the bind variable when it hard-parses a query, and then generate a potentially horrendous query plan geared specifically towards that first bound value.  By this token, the general sentiment is that use of bind variables for queries against large, partitioned (warehouse-y) tables was probably not in the best interest.  It was also given that such statements would be run infrequently compared to your normal set of OLTP tables where bind variables will save your bacon.<br /><br />I did google more about it and found something indicating that it shouldn't be an issue in our version of 10.2.0.2.  Unfortunately, this event occurred 3-4 weeks ago, and I neglected to bookmark that source.  I'll follow-up in this space if I do get a final answer.  Perhaps a loyal reader can steer me straight.<br /><br /><a href="http://jonathanlewis.wordpress.com/2006/12/11/bind-peeking/">This December post from Jonathan Lewis</a> doesn't suggest that the issue was ever "fixed" (if you can call it a bug).  Perhaps I was daydreaming or going through a chewing gum withdrawal delirium.

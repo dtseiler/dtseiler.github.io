@@ -1,0 +1,14 @@
+---
+layout: post
+title: 'Role Showdown: CONNECT vs RESOURCE'
+date: '2007-02-19T11:36:00.000-06:00'
+author: Don Seiler
+tags:
+- oracle
+- roles
+modified_time: '2010-11-19T22:48:47.520-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-4887384534211021825
+blogger_orig_url: http://www.seiler.us/2007/02/role-showdown-connect-vs-resource.html
+---
+
+Today in <a href="irc://chat.freenode.net/oracle">#oracle</a>, a question on privileges led me to discuss the Oracle roles CONNECT and RESOURCE.  These two roles are often misused, especially RESOURCE.  <a href="http://www.lifeaftercoffee.com/">Jon Emmons</a> highlights this in an <a href="http://www.lifeaftercoffee.com/2005/08/29/oracle-connect-and-resource-roles/">old blog post</a>.  Important to note is that the CONNECT role contained a lot of dangerous extras up until 10gR2.  The user on IRC <a href="http://eugeneciurana.com/pastebin/pastebin.php?show=232">confirmed this on his 10gR1 install</a>, being able to create tables with just the CONNECT role.  I suggested that he revoke CONNECT and just grant CREATE SESSION, which ended up working great for him.  When/if his organization upgrades to 10gR2, then he can grant CONNECT, which (as Emmons notes) only grants CREATE SESSION anyway.<br /><br />So by default, an Oracle database user doesn't even have the privilege to log into the database.  That is what CREATE SESSION does.  And even then, the user can't create objects (tables, indexes, etc.) in its own schema unless those privileges (or the system-wide "ANY" privileges) are gratned, plus the user will need to have some quota in the tablespace that it hopes to use.<br /><br />This way of doing things is definitely a good one, IMHO.  If you have many users connecting to an OLTP application schema, they don't need to create/drop objects.  Only grant what they <span style="font-style: italic;">need</span> to perform their tasks.  In a lot of applications, for example, this probably means not letting users delete rows from the application tables (using an "ACTIVE" flag instead).<br /><br />So, to summarize, CONNECT and RESOURCE prior to 10gR2 are a mess.  10gR2 lets you just grant CONNECT to allow users to connect, and then grant RESOURCE if they need to create their own objects (still may need quota privileges).

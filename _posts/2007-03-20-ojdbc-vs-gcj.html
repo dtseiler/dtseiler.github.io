@@ -1,0 +1,17 @@
+---
+layout: post
+title: ojdbc vs. gcj
+date: '2007-03-20T15:52:00.000-05:00'
+author: Don Seiler
+tags:
+- sun
+- gcj
+- ojdbc
+- oracle
+- java
+modified_time: '2010-11-19T22:48:47.076-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-2062735474730265846
+blogger_orig_url: http://www.seiler.us/2007/03/ojdbc-vs-gcj.html
+---
+
+If, upon your travels, you should encounter this error:<br /><br /><tt>java.lang.ClassNotFoundException: oracle.security.pki.OracleWallet</tt><br /><br />you probably want to double-check your java executable:<br /><pre><span style="color: rgb(0, 153, 0);"># java -version</span><br /><span style="color: rgb(0, 153, 0);">java version "1.4.2"</span><br /><span style="color: rgb(0, 153, 0);">gcj (GCC) 3.4.6 20060404 (Red Hat 3.4.6-3)</span><br /><span style="color: rgb(0, 153, 0);">Copyright (C) 2006 Free Software Foundation, Inc.</span><br /><span style="color: rgb(0, 153, 0);">This is free software; see the source for copying conditions.  There is NO</span><br /><span style="color: rgb(0, 153, 0);">warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span></pre>If you see the gcj, kill it with fire and install the Sun version (or remove the gcj-based /usr/bin/java that was ahead of your Sun executable in the $PATH):<br /><pre><span style="color: rgb(0, 153, 0);"># java -version</span><br /><span style="color: rgb(0, 153, 0);">java version "1.4.2_13"</span><br /><span style="color: rgb(0, 153, 0);">Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.2_13-b06)</span><br /><span style="color: rgb(0, 153, 0);">Java HotSpot(TM) Client VM (build 1.4.2_13-b06, mixed mode)</span></pre>Then all will be well in the world again.

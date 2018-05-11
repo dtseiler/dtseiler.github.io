@@ -1,0 +1,17 @@
+---
+layout: post
+title: Making Copies of Copies with Oracle RMAN
+date: '2014-11-12T10:13:00.002-06:00'
+author: Don Seiler
+tags:
+- backup
+- 11gR2
+- rman
+- oracle
+- copy
+modified_time: '2014-11-12T10:13:38.383-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-2383805665544839447
+blogger_orig_url: http://www.seiler.us/2014/11/making-copies-of-copies-with-oracle-rman.html
+---
+
+<div dir="ltr">I recently had need to make a copy of an image copy in Oracle rman. Since it wasn't immediately obvious to me, I thought it was worth sharing once I had it sorted out. I was familiar with making a backup of a backup, but had never thought about making a copy of a copy.</div><div dir="ltr"><br /></div><div dir="ltr">First you need to create an image copy of your database or tablespace. For the sake of example, I'll make a copy of the FOO tablespace. The key is to assign a tag to it that you can use for later reference. I'll use the tag "DTSCOPYTEST":</div><div dir="ltr"><br /></div><div dir="ltr"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">backup as copy&nbsp;</span></div><div dir="ltr"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; tablespace foo&nbsp;</span></div><div dir="ltr"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; tag 'DTSCOPYTEST'</span></div><div dir="ltr"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; format '+DG1';</span></div><div dir="ltr"><br /></div><div dir="ltr">So I have my image copy in the DG1 tablespace. Now say we want to make copy of that for some testing purpose and put it in a different diskgroup. For that, we need the "BACKUP AS COPY COPY" command, and we'll want to specify the copy we just took by using the tag that was used:</div><div dir="ltr"><br /></div><div dir="ltr"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">backup as copy</span></div><div dir="ltr"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; copy of tablespace foo</span></div><div dir="ltr"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; from tag 'DTSCOPYTEST'</span><br /><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; tag 'DTSCOPYTEST2'</span></div><div dir="ltr"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; format '+DG2';</span><br /><br />As you'd guess, RMAN makes a copy of the first copy, writing it to the specified format location.<br /><br />As always, hope this helps! </div>

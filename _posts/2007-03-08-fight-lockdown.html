@@ -1,0 +1,15 @@
+---
+layout: post
+title: Fight the Lockdown
+date: '2007-03-08T16:05:00.000-06:00'
+author: Don Seiler
+tags:
+- permissions
+- security
+- oracle
+modified_time: '2010-11-19T22:48:47.234-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-270649236877825268
+blogger_orig_url: http://www.seiler.us/2007/03/fight-lockdown.html
+---
+
+It's come up before, but it had been so long that I had nearly forgotten it.  "It" is the serious permissions lockdown after installing Oracle RDBMS >= 9i.  Someone <a href="http://www.madisonlinux.org/pipermail/madlug/2007-February/013967.html">brought it up</a> on the <a href="http://www.madisonlinux.org/">MADLUG</a> list earlier this year, and I vaguely remembered that it was fixed in Oracle 10g 10.2.0.2.  What I had forgotten was that it was fixed in the form of a script that needed to be run post-install.<br /><br />I should say "fixed" because it's only a problem if you want non-oracle/oinstall users to use utilities like sqlplus locally.  Not totally unheard-of by any means, but some people really lock down their servers, and would prefer the tight perms.<br /><br />Anyway, the script is <tt>$ORACLE_HOME/install/changePerm.sh</tt>, and it will loosen things up for normal OS users.

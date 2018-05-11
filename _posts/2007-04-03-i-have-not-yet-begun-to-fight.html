@@ -1,0 +1,15 @@
+---
+layout: post
+title: I have not yet begun to fight!
+date: '2007-04-03T21:37:00.000-05:00'
+author: Don Seiler
+tags:
+- bind variables
+- john paul jones
+- oracle
+modified_time: '2010-11-19T22:48:46.980-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7704796483788899440
+blogger_orig_url: http://www.seiler.us/2007/04/i-have-not-yet-begun-to-fight.html
+---
+
+So sayeth <a href="http://en.wikipedia.org/wiki/John_Paul_Jones">John Paul Jones</a> (not <a href="http://en.wikipedia.org/wiki/John_Paul_Jones_%28musician%29">this one</a>), so sayeth I.<br /><br />I've been taking steps to make sure my developers know of the many <a href="http://en.wikipedia.org/wiki/72_Virgins">benefits</a> <a href="http://en.wikipedia.org/wiki/Unicorns">of</a> <a href="http://en.wikipedia.org/wiki/Bacon">using</a> <a href="http://en.wikipedia.org/wiki/Beer">bind</a> <a href="http://en.wikipedia.org/wiki/Pornography">variables</a>, and the <a href="http://en.wikipedia.org/wiki/Drawing_and_quartering">punishments for not using bind variables</a>.  This is paying off in the newer code coming out, but it will take a while to re-write some of the older applications.<br /><br />Today, while tracing another query, I saw that one of the back office applications that dealt with batch rating was using a query without bind variables.  In the timeframe of 1 hour this morning, the same query with a different literal value was called over <span style="font-weight: bold; font-style: italic;">21,000</span> times.  The same app was bulk issuing two other queries using literals as well.  Let's just say that <a href="http://www.kropserkel.com/horse_head_pillow.htm">it was made certain</a> that this needed to be changed.

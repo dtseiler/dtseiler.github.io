@@ -1,0 +1,15 @@
+---
+layout: post
+title: Caveats for renaming a server running ASM
+date: '2007-04-09T13:07:00.000-05:00'
+author: Don Seiler
+tags:
+- ocr
+- asm
+- oracle
+modified_time: '2010-11-19T22:48:46.900-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-6179506548146795178
+blogger_orig_url: http://www.seiler.us/2007/04/caveats-for-renaming-server-running-asm.html
+---
+
+I have a small tower running Oracle 10.2.0.3 on <a href="http://www.centos.org/">CentOS4</a> under my desk that I use as a personal sandbox for playing with Oracle so I'm not always futzing with developer instances.  This was where I first played with ASM, etc.  However, I rarely actually use this machine from day-to-day.<br /><br />Recently, I needed access to a 10.2.0.3 instance to <a href="http://seilerwerks.blogspot.com/2007/04/using-not-lnnvl-is-not-good.html">see if a bug still persisted</a>.  All of my production and development instances are on 10.2.0.2, so this box was called to duty.  However, when I tried to start up cssd (required for ASM), I got errors referring to configuration files missing.  (I'll try to find the exact error if I can dig it up).<br /><br />The trick is that these files were named based on the server hostname.  I had recently <a href="http://www.myfavoritetoys.com/character_detail.php?who=bulgy">renamed this box</a> to fall in line with our internal policy of naming servers after <a href="http://www.myfavoritetoys.com/characters.php">Thomas the Tank Engine characters</a>.  So I needed to <a href="http://www.dba-village.com/village/dvp_forum.OpenThread?ThreadIdA=28267">reset the OCR key</a> to use my new hostname, and all was well again.<br /><br />Well, all was well after I also installed the updated <a href="http://www.oracle.com/technology/tech/linux/asmlib/install.html">asmlib</a> RPM for the kernel which I thoughtlessly updated as well.

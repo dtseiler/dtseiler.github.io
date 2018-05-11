@@ -1,0 +1,16 @@
+---
+layout: post
+title: CSALTER requires a clean CSSCAN
+date: '2007-06-01T09:49:00.000-05:00'
+author: Don Seiler
+tags:
+- csalter
+- oracle
+- csscan
+- nls
+modified_time: '2010-11-19T22:48:46.436-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-4653449105376271588
+blogger_orig_url: http://www.seiler.us/2007/06/csalter-requires-clean-csscan.html
+---
+
+<div style="text-align: left;">Following up to <a href="http://ora.seiler.us/2007/05/changing-oracle-database-character-sets.html">my last post</a>, it turns out that CSALTER requires you to have clean data and produce a clean CSSCAN within 7 days prior to running the character set migration script.<br /><br />If the CSSCAN isn't clean, you'll get this:<br /><blockquote><pre><span style="color: rgb(0, 153, 0);">Checking data validility...</span><br /><span style="color: rgb(0, 153, 0);"> Exceptional data found in scanner result</span><br /><br /><span style="color: rgb(0, 153, 0);"> PL/SQL procedure successfully completed.</span><br /><br /><span style="color: rgb(0, 153, 0);"> Checking or Converting phrase did not finish successfully</span><br /><span style="color: rgb(0, 153, 0);"> No database (national) character set will be altered</span><br /><span style="color: rgb(0, 153, 0);"> CSALTER finished unsuccessfully.</span></pre></blockquote>So that question has been answered.  Now to scrub the application data, as well as the histograms for that data that are in the data dictionary.<br /></div>

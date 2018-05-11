@@ -1,0 +1,14 @@
+---
+layout: post
+title: Dynamic Listener Registration
+date: '2007-03-06T23:34:00.000-06:00'
+author: Don Seiler
+tags:
+- listener
+- oracle
+modified_time: '2010-11-19T22:48:47.286-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7567318855566664224
+blogger_orig_url: http://www.seiler.us/2007/03/dynamic-listener-registration.html
+---
+
+By now I'm sure you all know that the Oracle listener supports dynamic registration, wherein Oracle RDBMS and ASM instances can automatically register themselves to the listener.  You don't even need to have a listener.ora file (unless you need more than the default service/SID registered).<br /><br />However be aware that if the listener is started after the Oracle instance(s), then it may take the instance PMON up to 60 seconds to re-try.  If you don't feel like waiting for what may seem like an eternity, you can manually tell your instance to register immediately with:<br /><br /><tt><span style="color: rgb(0, 153, 0);">ALTER SYSTEM REGISTER;</span></tt><br /><br />The <a href="http://download-west.oracle.com/docs/cd/B19306_01/network.102/b14212/architecture.htm">Oracle Database Net Services Administrator's Guide</a> states it pretty plainly:<br /><blockquote style="font-style: italic;">If the listener is not running when an instance starts, PMON is not able to register the service information. PMON attempts to connect to the listener periodically, however, it may take up to 60 seconds before PMON registers with the listener after it has been started. To initiate service registration immediately after the listener is started, use the SQL statement <code>ALTER SYSTEM REGISTER</code>. This is especially useful in high-availability configurations.</blockquote>My <a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FOracle-Database-Certification-Guide-Handbook%2Fdp%2F0072257903%3Fie%3DUTF8%26s%3Dbooks%26qid%3D1173246580%26sr%3D8-1&amp;tag=dieseilerw-20&linkCode=ur2&amp;camp=1789&creative=9325">exam prep guide</a>, written during 10gR1, seems to imply that Oracle instances will not automatically re-try to register, and that ALTER SYSTEM REGISTER is required if the listener was not already up:<br /><blockquote style="font-style: italic;">You will need to re-register your instance with the listener with "alter system" if you have restarted the listener, or if you started the database instance before starting the listener.</blockquote>Perhaps the 60-second retry was introduced in 10gR2, or perhaps I'm just reading too much into that sentence.  It does indeed work on 10gR2, as my ASM instance demonstrated last week.  I don't have a 9i or 10gR1 instance handy to test it on though.

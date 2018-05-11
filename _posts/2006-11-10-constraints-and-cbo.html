@@ -1,0 +1,15 @@
+---
+layout: post
+title: Constraints and the CBO
+date: '2006-11-10T23:28:00.000-06:00'
+author: Don Seiler
+tags:
+- constraints
+- oracle
+- cbo
+modified_time: '2010-11-19T22:48:48.256-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-7976569015151685921
+blogger_orig_url: http://www.seiler.us/2006/11/constraints-and-cbo.html
+---
+
+In my recent research into <a href="http://www.oracle-base.com/articles/8i/CostBasedOptimizerAndDatabaseStatistics.php">Oracle's CBO</a>, I had read a snippet from <a href="http://oramossoracle.blogspot.com/2006/09/help-cost-based-optimizer-add.html">Jeff Moss' blog</a> about constraints being particularly extra helpful to the CBO.  <a href="http://tkyte.blogspot.com/">Tom Kyte</a> had two consecutive blog posts about this topic in the beginning of the year.  <a href="http://tkyte.blogspot.com/2006/01/constraints-have-bad-name.html">The first</a> applies to general purpose and OLTP databases, whereas <a href="http://tkyte.blogspot.com/2006/01/stuck-in-rut.html">the second</a> is geared specifically towards data warehouses using materialized views.<br /><br />Tom even breaks out the RELY hint to enable the use of constraints on large warehouse tables so they won't kill bulk load times.  I'll see if I can try to implement this on our warehouse side.  Unfortunately, now that we have a handle on the previous load/CBO problems, I have a priority java app that I need to get done before I can get too crazy with Oracle.

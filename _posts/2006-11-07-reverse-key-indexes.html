@@ -1,0 +1,15 @@
+---
+layout: post
+title: Reverse Key Indexes
+date: '2006-11-07T16:48:00.000-06:00'
+author: Don Seiler
+tags:
+- indexes
+- oracle
+- jonathan lewis
+modified_time: '2010-11-19T22:48:48.287-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-3314735682393608433
+blogger_orig_url: http://www.seiler.us/2006/11/reverse-key-indexes.html
+---
+
+So I started reading the <a href="http://www.amazon.com/Oracle-Database-10g-DBA-Handbook/dp/0072231459/sr=8-1/qid=1162940136/ref=pd_bbs_sr_1/102-1378747-1964155?ie=UTF8&amp;s=books">Oracle 10g DBA Handbook</a> because I've deluded myself into thinking that I'll just memorize everything in there.  The first chapter seemed to cover very basic stuff that even I had a grasp on, but it didn't take long for me to learn something new.  18 pages in, I read of the magic of <a href="http://www.jlcomp.demon.co.uk/faq/reverseindex.html">reverse key indexes</a>.  This is a pretty fundamental index type that I had somehow never heard about before this, so I thought I'd share it here.<br /><br />A reverse key index does just that, stores the indexed values in reverse, so an id value of 123456 would be stored as 654321.  One immediate advantage in doing so is reducing contention for blocks by distributing inserts across all leaf keys of the index.  For example, inserting orders 1234, 1235, 1236 and 1237 would normally probably all go into the same block (if space is available), and the writers would wait for each other to finish with it.  With a reverse key index, they would be spread to 4321, 5321, 6321 and 7321, which are not close together and probably not on the same node.<br /><br />For a complete analysis, the link to Jonathan Lewis' FAQ above is quality stuff.

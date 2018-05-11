@@ -1,0 +1,16 @@
+---
+layout: post
+title: Wherefore art thou, Development DBA?
+date: '2007-05-10T16:58:00.000-05:00'
+author: Don Seiler
+tags:
+- dba
+- design
+- developers
+- oracle
+modified_time: '2010-11-19T22:48:46.529-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-5657838699706873983
+blogger_orig_url: http://www.seiler.us/2007/05/wherefore-art-thou-development-dba.html
+---
+
+Highlander <a href="http://oracledoug.com/serendipity/">Doug Burns</a> wrote a great piece last month entitled "<a href="http://www.simple-talk.com/sql/database-administration/what-use-is-a-development-dba/">What use is a Development DBA?</a>" that really hits home for me.  I have a lot of minor and not-so-minor conflicts with the developers on my team (read about "<a href="http://ora.seiler.us/2006/11/compound-primary-keys-must-die.html">the compound keys</a>" for some perspective).<br /><br />As Doug says, a lot of the problems could be avoided if developers leveraged their DBA earlier in the design process, rather than sending him a SQL script to run on release night and having the DBA sigh at being relegated to an overpowered operator.<br /><br />I'm making more of an effort to track down poorly performing production queries and filing friendly bugs for developers with suggested fixes (normally an additional index).  But we could do a lot more by having proactive sessions and getting the DBA involved in testing to find these queries before they get into production.  Often times I'll get a reaction that the developer had no idea that such-and-such was possible, and I remind them that I'm "right over there" and to feel free to seek me out for any and all database and application design questions.<br /><br />Of course I'll still be grinding my teeth when I think of those huge compound primary keys polluting <span style="font-weight: bold; font-style: italic;">my</span> database.

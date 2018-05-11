@@ -1,0 +1,14 @@
+---
+layout: post
+title: python + cx_Oracle = <3
+date: '2007-10-19T16:25:00.000-05:00'
+author: Don Seiler
+tags:
+- python
+- oracle
+modified_time: '2010-11-19T22:48:46.023-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-4683366365775780062
+blogger_orig_url: http://www.seiler.us/2007/10/python-cxoracle.html
+---
+
+Took some time over the past two days to deliberately use <a href="http://www.python.org">python</a>.  Much fun was had by all (where all = me).<br /><br />My first creation used the <a href="http://docs.python.org/lib/module-subprocess.html">subprocess</a> module (although I had to install the <a href="http://www.lysator.liu.se/%7Eastrand/popen5/">older separate version</a> since I'm on python 2.3) to call <a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?df">df</a> over <a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?ssh+1">ssh</a> and then again locally to make sure that my disk partitions were large enough to hold an <a href="http://www.oracle.com/technology/deploy/availability/htdocs/rman_overview.htm">rman</a> duplication.  Works like a champ, and hopefully I won't have long-running duplications blow up and page me at 2 AM.  Subprocess is a really nice module for making system calls as well, I'll let you play around with it before thanking me.<br /><br />My second creation used the <a href="http://cx-oracle.sourceforge.net/">cx_Oracle</a> module to connect to Oracle as the SYSDBA and do some post-duplication tasks for my development databases.  Changing flags to note that it isn't production, granting some more privileges to the developers, etc.  Thanks to Anthony Tuininga for answering my newbie emails.

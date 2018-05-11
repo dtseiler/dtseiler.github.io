@@ -1,0 +1,12 @@
+---
+layout: post
+title: A Drupal Backup Script
+date: '2009-11-22T10:28:00.000-06:00'
+author: Don Seiler
+tags: 
+modified_time: '2010-11-19T23:43:38.199-06:00'
+blogger_id: tag:blogger.com,1999:blog-7032512792942232766.post-8107115227108352990
+blogger_orig_url: http://www.seiler.us/2010/11/drupal-backup-script.html
+---
+
+<div style="color: #222222; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; margin-bottom: 15px; margin-left: 0px; margin-right: 0px; margin-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px;">I maintain a drupal codebase that hosts multiple sites. I’ve been shamefully lax in getting regular backups of those files and databases, until today. Here is a pretty basic bash script that will create a bzip2 archive of the drupal codebase (including site-specific dirs), and then create mysqldump exports of each site’s database and gzip those files. This particular script requires that the drupal install directory be named “drupal”, but you can change this easily enough to suit your needs.<br /><br /></div><script src="https://gist.github.com/707648.js?file=drupalbackup.sh"></script><br /><div style="color: #222222; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; margin-bottom: 15px; margin-left: 0px; margin-right: 0px; margin-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px;">This does require a ~/.drupalsites file that contains the needed database login info (suggest chmod 600). Like I said, nothing too clever.This script runs fine from cron, I have it scheduled for a weekly run. I then plan to rsync this to my home server for an offsite copy, even though the hosting service provides backups as well.</div>
