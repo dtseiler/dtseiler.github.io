@@ -104,7 +104,7 @@ url-pretty: "www.seiler.us"  # eg. "deanattali.com/beautiful-jekyll"
 # --- Web Statistics Section --- #
 
 # Fill in your Google Analytics ID to track your website using GA
-#google_analytics: ""
+google_analytics: "UA-119563882-1"
 
 # Google Tag Manager ID
 #gtm: ""
