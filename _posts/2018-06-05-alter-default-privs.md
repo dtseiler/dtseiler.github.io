@@ -100,7 +100,6 @@ You are now connected to database "privtest" as user "marco".
 
 > select count(*) from app_schema.rhino_tables;
 psql:alter_default.sql:43: ERROR:  permission denied for relation rhino_tables
-> \connect privtest rhino
 ```
 
 To fix this we can log back in as rhino (or a superuser) and grant select on this table:
