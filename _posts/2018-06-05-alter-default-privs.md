@@ -10,7 +10,7 @@ One of the big changes I came upon as I transitioned from Oracle to PostgreSQL w
 
 Let's say we have a database, privtest, with a schema `app_schema` owned by `app_owner`. We also have 3 users: bigsam, rhino and marco. All 3 users have `USAGE` granted on privtest, while bigsam and rhino also have `CREATE`:
 
-```
+```sql
 > grant usage on schema app_schema to bigsam;
 GRANT
 > grant usage on schema app_schema to rhino;
@@ -26,7 +26,7 @@ GRANT
 ## Setting Default Privileges
 So we first connect as bigsam and define default privileges for tables he creates in the `app_schema` schema.
 
-```
+```sql
 > \connect privtest bigsam
 You are now connected to database "privtest" as user "bigsam".
 
@@ -37,7 +37,7 @@ ALTER DEFAULT PRIVILEGES
 
 Then let's go ahead and create a new table:
 
-```
+```sql
 > create table app_schema.sam_tables as select * from pg_tables;
 SELECT 62
 ```
@@ -62,7 +62,7 @@ We see we have just the one table, owned by bigsam with full privileges. Then we
 
 So now as marco we can see the data in that table:
 
-```
+```sql
 > \connect privtest marco
 You are now connected to database "privtest" as user "marco".
 
@@ -75,7 +75,7 @@ You are now connected to database "privtest" as user "marco".
 
 ## Not Setting Default Privileges
 Now let's log in as rhino and create a table, but without setting any default privileges for marco or anybody:
-```
+```sql
 > \connect privtest rhino
 You are now connected to database "privtest" as user "rhino".
 
@@ -94,7 +94,7 @@ SELECT 63
 
 As expected, we have our new table with no special access privileges granted (the owner would still have full privileges). Let's log back in as marco and see what we can see:
 
-```
+```sql
 > \connect privtest marco
 You are now connected to database "privtest" as user "marco".
 
@@ -103,7 +103,7 @@ psql:alter_default.sql:43: ERROR:  permission denied for relation rhino_tables
 ```
 
 To fix this we can log back in as rhino (or a superuser) and grant select on this table:
-```
+```sql
 > \connect privtest rhino
 You are now connected to database "privtest" as user "rhino".
 
@@ -131,7 +131,7 @@ You are now connected to database "privtest" as user "marco".
 
 A superuser could also grant privileges for all tables in the schema, e.g.:
 
-```
+```sql
 # GRANT SELECT ON ALL TABLES IN SCHEMA app_schema TO marco;
 GRANT
 ```
