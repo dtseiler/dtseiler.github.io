@@ -5,7 +5,7 @@ tags: postgresql oracle
 date: '2018-10-02'
 ---
 
-Many RDBMSes use sequence caching to pre-generate sequence values in advance and store them in memory, allowing them to return new values quickly. If you are doing a lot of inserts that each call the sequence to get the next value, sequence caching is a good thing. Having to wait for the sequence to generate a value on every call could slow things down greatly.
+Many RDBMSes use sequence caching to pre-generate sequence values in advance and store them in memory, allowing them to return new values quickly. If you are doing a lot of inserts that each call the sequence to get the next value, sequence caching is a good thing. Having to wait for the sequence to generate a value on every call could slow things down significantly.
 
 When I made the move from Oracle to PostgreSQL, I noticed some interesting differences in sequence caching behavior and wanted to share them here for those that may be curious about them.
 
