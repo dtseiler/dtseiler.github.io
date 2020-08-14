@@ -12,7 +12,7 @@ I work mostly with databases, currently [PostgreSQL](https://www.postgresql.org/
 ## Play
 I devote a lot of my personal time to [youth hockey](http://www.manitowochockey.org). I also play more [Dota2](http://www.dota2.com) than a grown man should.
 
-I also enjoy playing around in Gimp and Inkscape to mock up logos and text  when a tutorial can show me exactly what I want to do.
+Current personal projects involve building a RetroPie arcade and playing with home assistant stuff involving a Raspberry Pi, a Ring doorbell, and a Google Home.
 
 ## Live
-I was born, raised and moved back to [Manitowoc](http://www.manitowoc.org), Wisconsin, USA. Wife & kids. Dog. House. The whole deal. [Wisconsin](https://www.wisc.edu/) alumnus (Comp Sci '98). Root for Badger sports (especially [hockey](http://uwbadgers.com/index.aspx?path=mhockey)), the [Green Bay Packers](https://www.packers.com), Milwaukee Brewers, Milwaukee Bucks, [Everton FC](http://www.evertonfc.com/) & [Les Canadiens de Montréal](https://www.nhl.com/canadiens).
+I was born, raised and moved back to [Manitowoc](http://www.manitowoc.org), Wisconsin, USA. Wife & kids. Dog. House. The whole deal. [Wisconsin](https://www.wisc.edu/) alumnus (Comp Sci '98). Root for Badger sports (especially [hockey](http://uwbadgers.com/index.aspx?path=mhockey)), the [Green Bay Packers](https://www.packers.com), [Milwaukee Brewers](http://www.brewers.com), [Milwaukee Bucks](http://www.bucks.com), [Everton FC](http://www.evertonfc.com/) & [Les Canadiens de Montréal](https://www.nhl.com/canadiens).
