@@ -58,7 +58,7 @@ ERROR: [047]: unable to create path '/var/lib/pg_wal/spool': [13] Permission den
 2021-05-23 21:56:52.103 P00   INFO: archive-get command end: aborted with exception [047]
 ```
 
-One thing to watch out for is if you try to set up a `spool-path` on a running instance, if you can't write to the path then you'll get an error on `archive-push` but the reason may not be immediately clear because pgBackRest (as of 2.33) does not write the `Permission denied` message in the PostgerSQL log:
+One thing to watch out for: when you try to set up a `spool-path` on a running instance, if you can't write to the path then you'll get an error on `archive-push` but the reason may not be immediately clear because pgBackRest (as of 2.33) does not write the `Permission denied` message in the PostgreSQL log:
 
 ```
 ERROR: [082]: unable to push WAL file '00000002000185E70000004B' to the archive asynchronously after 60 second(s)
