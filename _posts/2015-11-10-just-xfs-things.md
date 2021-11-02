@@ -15,4 +15,4 @@ $ uptime
  16:36:42 up 4 days, 12:28, 6 users, load average: 1029.20, 995.42, 865.77
 ```
 
-See https://www.centos.org/forums/viewtopic.php?f=47&t=52412 and https://access.redhat.com/solutions/532663 (requires RedHat subscription) for details. And defrag your XFS volumes.
+See [this](https://www.centos.org/forums/viewtopic.php?f=47&t=52412) and [that](https://access.redhat.com/solutions/532663) (requires RedHat subscription) for details. And defrag your XFS volumes.
