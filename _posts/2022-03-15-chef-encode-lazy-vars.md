@@ -14,7 +14,7 @@ It appeared simple enough to use the `lazy` keyword for simple string parameters
 ```ruby
 remote_file "/tmp/foo-v#{node['foo']['version']}.tar.gz" do
   source "https://internal-site.com/path/to/foo-v#{node['foo']['version']}.tar.gz"
-  headers lazy \{\{ 'Authorization' => "Basic #{Base64.encode64("#\{node['foo']['auth']['username']\}:#\{node.run_state['password']\}").strip}" \}\}
+  {% raw %}headers lazy {{ 'Authorization' => "Basic #{Base64.encode64("#{node['foo']['auth']['username']}:#{node.run_state['password']}").strip}" }}{% endraw %}
   checksum node['foo']['checksum']
   mode '0755'
   action :create
@@ -24,7 +24,7 @@ end
 One alternative that is possible with `remote_file` is to specify the username and password as part of the `source` URL and `lazy` load that, for example:
 
 ```ruby
-  source lazy "https://#\{node['foo']['auth']['username']\}:#\{node.run_state['password']\}@internal-site.com/path/to/foo-v#\{node['foo']['version']\}.tar.gz"
+  source lazy "https://#{node['foo']['auth']['username']}:#{node.run_state['password']}@internal-site.com/path/to/foo-v#{node['foo']['version']}.tar.gz"
 ```
 
 We decided to use the `headers` instead since that seemed to be a little cleaner and the intended use.
