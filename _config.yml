@@ -18,7 +18,7 @@ baseurl: ""
 title: die Seilerwerks
 
 # Short description of your site
-description: IT | Linux | Databases
+description: IT | Linux | Databases | Infrastructure
 
 # --- Navigation bar options --- #
 
@@ -74,7 +74,7 @@ social-network-links:
   email: "don@seiler.us"
   #facebook: daattali
   github: dtseiler
-  twitter: dtseiler
+    #twitter: dtseiler
 #  reddit: dtseiler
 #  google-plus: +DeanAttali
   linkedin: dtseiler
