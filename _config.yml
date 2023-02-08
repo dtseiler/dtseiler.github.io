@@ -27,6 +27,7 @@ navbar-links:
   About Me: "aboutme"
   Resources:
     - PostgreSQL Docs: "https://www.postgresql.org/docs/current/static/index.html"
+    - Effective Go: "https://go.dev/doc/effective_go"
     - Bash Programming: "http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html"
   Archives: "archives"
 
