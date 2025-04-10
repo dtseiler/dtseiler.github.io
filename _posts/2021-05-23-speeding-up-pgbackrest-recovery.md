@@ -38,7 +38,7 @@ archive-get-queue-max=4GB
 Last but not least, we come to `spool-path`. As mentioned earlier, this is where pgBackRest will stored the pre-fetched WAL files. Then, when PostgreSQL asks for the next WAL, pgBackRest moves the file from the `spool-path` location to the `pg_wal` directory under the PostgreSQL data directory. This is much better than waiting for pgBackRest to fetch the file from the cloud every time you ask for it, but we can make things a little better still.
 
 ```
-spool-path=/var/lib/pg_wal/spool
+spool-path=/var/lib/pg_wal/main/spool
 ```
 
 ### Location, location, location
@@ -47,14 +47,16 @@ When pgBackRest moves a file from one directory to another on the same volume, t
 
 It's important to note that if your `pg_wal` is symlinked to a separate volume from your data directory, then `spool-path` should be on that same separate volume. You want to be where the actual WAL files will be going, not necessarily the data directory location.
 
+UPDATE (2025-04-10): It is _also_ important that your `spool-path` NOT be within your `pg_wal` directory, as this could cause problems for operations such as `pg_rewind`. In this scenario, assume that we have our actual `pg_wal` location on the `/var/lib/pg_wal` volume at `/var/lib/pg_wal/main/pg_wal` (which is then symlinked into the data directory), and the spool dir along side (but not _inside_) at `/var/lib/pg_wal/main/spool`.
+
 ### Check Your Permissions
 
 Normally, pgBackRest will create `spool-path` if needed (if it can as postgres). However, if `spool-path` cannot be created (or otherwise written to), then you'll get `archive-get` failures on recovery:
 
 ```
 2021-05-23 21:56:52.095 UTC [21656] LOG:  starting archive recovery
-2021-05-23 21:56:52.102 P00   INFO: archive-get command begin 2.33: [000000010000000000000002, pg_wal/RECOVERYXLOG] --archive-async --exec-id=21660-fdd3647d --log-level-console=info --pg1-path=/var/lib/postgresql/12/main --process-max=2 --repo1-azure-account=<redacted> --repo1-azure-container=pgbackrest --repo1-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/ --repo1-type=azure --spool-path=/var/lib/pg_wal/spool --stanza=postgres-foo
-ERROR: [047]: unable to create path '/var/lib/pg_wal/spool': [13] Permission denied
+2021-05-23 21:56:52.102 P00   INFO: archive-get command begin 2.33: [000000010000000000000002, pg_wal/RECOVERYXLOG] --archive-async --exec-id=21660-fdd3647d --log-level-console=info --pg1-path=/var/lib/postgresql/12/main --process-max=2 --repo1-azure-account=<redacted> --repo1-azure-container=pgbackrest --repo1-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/ --repo1-type=azure --spool-path=/var/lib/pg_wal/main/spool --stanza=postgres-foo
+ERROR: [047]: unable to create path '/var/lib/pg_wal/main/spool': [13] Permission denied
 2021-05-23 21:56:52.103 P00   INFO: archive-get command end: aborted with exception [047]
 ```
 
@@ -66,7 +68,7 @@ ERROR: [082]: unable to push WAL file '00000002000185E70000004B' to the archive 
 2021-05-19 15:46:19.374 UTC [22000] LOG:  archive command failed with exit code 82
 2021-05-19 15:46:19.374 UTC [22000] DETAIL:  The failed archive command was: /usr/bin/pgbackrest --stanza=postgres-foo archive-push pg_wal/000000020
 00185E70000004B
-2021-05-19 15:46:20.386 P00   INFO: archive-push command begin 2.32: [pg_wal/00000002000185E70000004B] --archive-async --compress-type=lz4 --exec-id=22071-481bde16 --log-level-console=info --log-level-file=info --pg1-path=/var/lib/postgresql/12/main --process-max=3 --repo1-azure-account=<redacted> --repo1-azure-container=pgbackrest --repo1-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/ --repo1-type=azure --spool-path=/var/lib/pg_wal/spool --stanza=postgres-foo
+2021-05-19 15:46:20.386 P00   INFO: archive-push command begin 2.32: [pg_wal/00000002000185E70000004B] --archive-async --compress-type=lz4 --exec-id=22071-481bde16 --log-level-console=info --log-level-file=info --pg1-path=/var/lib/postgresql/12/main --process-max=3 --repo1-azure-account=<redacted> --repo1-azure-container=pgbackrest --repo1-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/ --repo1-type=azure --spool-path=/var/lib/pg_wal/main/spool --stanza=postgres-foo
 ```
 
 It does, however, write it in the pgBackRest archive-push-async log (usually found under /var/log/pgbackrest):
@@ -76,8 +78,8 @@ It does, however, write it in the pgBackRest archive-push-async log (usually fou
 2021-05-19 15:46:20.399 P00   INFO: archive-push:async command begin 2.32: [/var/lib/postgresql/12/main/pg_wal] --archive-async --compress-type=lz4 --
 exec-id=22071-481bde16 --log-level-console=off --log-level-file=info --log-level-stderr=off --pg1-path=/var/lib/postgresql/12/main --process-max=3 --r
 epo1-azure-account=<redacted> --repo1-azure-container=pgbackrest --repo1-azure-key=<redacted> --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-2
-56-cbc --repo1-path=/ --repo1-type=azure --spool-path=/var/lib/pg_wal/spool --stanza=postgres1-test
-2021-05-19 15:46:20.399 P00  ERROR: [047]: unable to create path '/var/lib/pg_wal/spool': [13] Permission denied
+56-cbc --repo1-path=/ --repo1-type=azure --spool-path=/var/lib/pg_wal/main/spool --stanza=postgres1-test
+2021-05-19 15:46:20.399 P00  ERROR: [047]: unable to create path '/var/lib/pg_wal/main/spool': [13] Permission denied
 2021-05-19 15:46:20.399 P00   INFO: archive-push:async command end: aborted with exception [047]
 ```
 
